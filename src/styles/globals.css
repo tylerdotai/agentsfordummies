@@ -26,7 +26,8 @@
   --transition-slow: 400ms ease;
 
   /* Fonts */
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Lato", system-ui, sans-serif;
+  --font-display: "Josefin Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
@@ -41,6 +42,15 @@ body {
   color: var(--color-text);
   line-height: 1.7;
   overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
 }
 
 /* Scroll progress bar */
