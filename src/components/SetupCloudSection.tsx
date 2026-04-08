@@ -30,7 +30,7 @@ const agents = [
     name: "Hermes Agent",
     tagline: "By NousResearch — zero vendor lock-in",
     description:
-      "Hermes Agent is an open-source agent framework from NousResearch. It outperforms Claude Code and OpenClaw as an agentic harness on real-world tasks. Works on any model, connects to Telegram, Discord, Slack, WhatsApp, and Signal. Can run on a $5 VPS.",
+      "Hermes Agent is a free, open-source agent framework from NousResearch — just like OpenClaw. It outperforms Claude Code and OpenClaw as an agentic harness on real-world tasks. Works with any AI model, connects to Telegram, Discord, Slack, WhatsApp, and Signal. You bring your own API key — no cloud fees, no vendor lock-in.",
     href: "https://hermes-agent.nousresearch.com",
     docsHref: "https://github.com/nousresearch/hermes-agent",
     pros: [
@@ -39,7 +39,7 @@ const agents = [
       "Works on Telegram, Discord, Slack, WhatsApp, Signal",
       "Creates new skills from experience",
       "Memory persists across sessions",
-      "Can run on a $5/month VPS",
+      "100% free and open source — you bring your own API key",
     ],
     difficulty: "Intermediate",
     icon: "🔮",

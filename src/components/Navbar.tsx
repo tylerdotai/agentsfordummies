@@ -47,17 +47,19 @@ export function Navbar() {
 
   return (
     <>
-      {/* Hamburger */}
-      <button
-        className={styles.hamburger}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isOpen}
-      >
-        <span className={styles.hamburgerLine} data-open={isOpen} />
-        <span className={styles.hamburgerLine} data-open={isOpen} />
-        <span className={styles.hamburgerLine} data-open={isOpen} />
-      </button>
+      {/* Hamburger — hidden when overlay is open on mobile */}
+      {!isOpen && (
+        <button
+          className={styles.hamburger}
+          onClick={() => setIsOpen(true)}
+          aria-label="Open menu"
+          aria-expanded={false}
+        >
+          <span className={styles.hamburgerLine} data-open={false} />
+          <span className={styles.hamburgerLine} data-open={false} />
+          <span className={styles.hamburgerLine} data-open={false} />
+        </button>
+      )}
 
       {/* Active section indicator — desktop pill */}
       <div className={styles.activeIndicator}>

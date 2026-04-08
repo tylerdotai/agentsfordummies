@@ -45,9 +45,9 @@ const twitterAccounts = [
   },
   {
     name: "Alex Finn",
-    handle: "@AlexFinnOfficial",
+    handle: "@AlexFinn",
     desc: "Posts regularly about OpenClaw workflows, agent setups, and automation patterns. Great for staying inspired.",
-    href: "https://x.com/AlexFinnOfficial",
+    href: "https://x.com/AlexFinn",
     color: "#60a5fa",
   },
   {

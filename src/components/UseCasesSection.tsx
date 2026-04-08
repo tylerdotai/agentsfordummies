@@ -63,47 +63,53 @@ const intermediateCases = [
 
 export function UseCasesSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    const scrollContainer = scrollContainerRef.current;
+    if (!section || !scrollContainer) return;
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 768px)", () => {
-        // Section heading
-        gsap.fromTo(
-          section.querySelectorAll(".section-heading"),
-          { autoAlpha: 0, y: 40 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: section,
-              start: "top 65%",
-            },
-          }
-        );
+      // Horizontal scroll — desktop only
+      mm.add("(min-width: 1024px)", () => {
+        const containerWidth = scrollContainer.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        const distance = containerWidth - viewportWidth + 160;
 
-        // Cards with clip-path wipe
+        gsap.to(scrollContainer, {
+          x: -distance,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${distance}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+
+      // Mobile: stagger fade-in for cards
+      mm.add("(max-width: 1023px)", () => {
         section.querySelectorAll(".usecase-card").forEach((card, i) => {
           gsap.fromTo(
             card,
-            { autoAlpha: 0, y: 40, clipPath: "inset(0 0 100% 0)" },
+            { autoAlpha: 0, y: 40 },
             {
               autoAlpha: 1,
               y: 0,
-              clipPath: "inset(0 0 0% 0)",
               duration: 0.7,
               ease: "power3.out",
               delay: (i % 4) * 0.08,
               scrollTrigger: {
                 trigger: card,
-                start: "top 85%",
+                start: "top 88%",
                 toggleActions: "play none none reverse",
               },
             }
@@ -120,19 +126,18 @@ export function UseCasesSection() {
       ref={sectionRef}
       id="use-cases"
       style={{
-        padding: "var(--spacing-section) 1.5rem",
+        overflow: "hidden",
         background: "var(--color-bg-secondary)",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+      {/* Section header — not part of horizontal scroll */}
+      <div style={{ padding: "var(--spacing-section) 1.5rem 3rem" }}>
         <h2
-          className="section-heading"
           style={{
             fontSize: "clamp(2rem, 5vw, 3rem)",
             fontWeight: 800,
             marginBottom: "1rem",
             color: "var(--color-text)",
-            willChange: "opacity, transform",
           }}
         >
           What Can You Actually Do With One?
@@ -142,7 +147,7 @@ export function UseCasesSection() {
           style={{
             fontSize: "1.25rem",
             color: "var(--color-text-muted)",
-            marginBottom: "4rem",
+            marginBottom: "2rem",
             maxWidth: "620px",
             lineHeight: 1.7,
           }}
@@ -151,214 +156,263 @@ export function UseCasesSection() {
           right now with OpenClaw and Hermes Agent — not theoretical examples.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
-          {/* Beginner */}
-          <div>
-            <h3
-              className="section-heading"
-              style={{
-                fontSize: "1.1rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--color-accent)",
-                marginBottom: "1.5rem",
-                willChange: "opacity, transform",
-              }}
-            >
-              Beginner — Start Here
-            </h3>
+        {/* Scroll hint for desktop */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.5rem 1rem",
+            background: "var(--color-accent-muted)",
+            border: "1px solid rgba(255,61,0,0.25)",
+            borderRadius: "999px",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            color: "var(--color-accent)",
+          }}
+          className="scroll-hint"
+        >
+          <span>←</span> Scroll to explore <span>→</span>
+        </div>
+      </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "1.25rem",
-              }}
-            >
-              {beginnerCases.map((useCase) => (
-                <div
-                  key={useCase.title}
-                  className="usecase-card"
-                  style={{
-                    padding: "1.75rem",
-                    background: "var(--color-surface)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "var(--radius-lg)",
-                    willChange: "opacity, transform, clip-path",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <useCase.icon size={20} color="var(--color-accent)" />
-                    <h4
-                      style={{
-                        fontSize: "1.05rem",
-                        fontWeight: 700,
-                        color: "var(--color-text)",
-                        margin: 0,
-                      }}
-                    >
-                      {useCase.title}
-                    </h4>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--color-text-muted)",
-                      marginBottom: "1rem",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {useCase.desc}
-                  </p>
-                  <div
-                    style={{
-                      padding: "0.875rem",
-                      background: "var(--color-bg)",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: "var(--radius-md)",
-                      borderLeft: "3px solid var(--color-accent)",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        color: "var(--color-text-muted)",
-                        marginBottom: "0.35rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      Try this
-                    </p>
-                    <p
-                      style={{
-                        fontSize: "0.85rem",
-                        color: "var(--color-text)",
-                        margin: 0,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      &ldquo;{useCase.prompt}&rdquo;
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Horizontally-scrolling card container */}
+      <div
+        ref={scrollContainerRef}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "1.5rem",
+          padding: "0 1.5rem 4rem calc(100vw - 160px)",
+          willChange: "transform",
+        }}
+      >
+        {/* Spacer to allow last card to reach center */}
+        <div style={{ minWidth: "2rem" }} />
+
+        {/* Beginner */}
+        <div
+          style={{
+            minWidth: "340px",
+            maxWidth: "340px",
+          }}
+        >
+          <div
+            style={{
+              padding: "1.25rem 1.5rem",
+              background: "var(--color-accent)",
+              borderRadius: "var(--radius-md)",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "#fff",
+              marginBottom: "1.25rem",
+              display: "inline-block",
+            }}
+          >
+            Beginner — Start Here
           </div>
 
-          {/* Intermediate */}
-          <div>
-            <h3
-              className="section-heading"
-              style={{
-                fontSize: "1.1rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "#4ade80",
-                marginBottom: "1.5rem",
-                willChange: "opacity, transform",
-              }}
-            >
-              Intermediate
-            </h3>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "1.25rem",
-              }}
-            >
-              {intermediateCases.map((useCase) => (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.25rem",
+            }}
+          >
+            {beginnerCases.map((useCase) => (
+              <div
+                key={useCase.title}
+                className="usecase-card"
+                style={{
+                  padding: "1.75rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-lg)",
+                  willChange: "opacity, transform",
+                }}
+              >
                 <div
-                  key={useCase.title}
-                  className="usecase-card"
                   style={{
-                    padding: "1.75rem",
-                    background: "var(--color-surface)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "var(--radius-lg)",
-                    borderTop: "3px solid #4ade80",
-                    willChange: "opacity, transform, clip-path",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    marginBottom: "1rem",
                   }}
                 >
-                  <div
+                  <useCase.icon size={20} color="var(--color-accent)" />
+                  <h4
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      marginBottom: "1rem",
+                      fontSize: "1.05rem",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                      margin: 0,
                     }}
                   >
-                    <useCase.icon size={20} color="#4ade80" />
-                    <h4
-                      style={{
-                        fontSize: "1.05rem",
-                        fontWeight: 700,
-                        color: "var(--color-text)",
-                        margin: 0,
-                      }}
-                    >
-                      {useCase.title}
-                    </h4>
-                  </div>
+                    {useCase.title}
+                  </h4>
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--color-text-muted)",
+                    marginBottom: "1rem",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {useCase.desc}
+                </p>
+                <div
+                  style={{
+                    padding: "0.875rem",
+                    background: "var(--color-bg)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-md)",
+                    borderLeft: "3px solid var(--color-accent)",
+                  }}
+                >
                   <p
                     style={{
-                      fontSize: "0.9rem",
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
                       color: "var(--color-text-muted)",
-                      marginBottom: "1rem",
-                      lineHeight: 1.7,
+                      marginBottom: "0.35rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
                     }}
                   >
-                    {useCase.desc}
+                    Try this
                   </p>
-                  <div
+                  <p
                     style={{
-                      padding: "0.875rem",
-                      background: "var(--color-bg)",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: "var(--radius-md)",
-                      borderLeft: "3px solid #4ade80",
+                      fontSize: "0.85rem",
+                      color: "var(--color-text)",
+                      margin: 0,
+                      lineHeight: 1.6,
                     }}
                   >
-                    <p
-                      style={{
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        color: "var(--color-text-muted)",
-                        marginBottom: "0.35rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      Try this
-                    </p>
-                    <p
-                      style={{
-                        fontSize: "0.85rem",
-                        color: "var(--color-text)",
-                        margin: 0,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      &ldquo;{useCase.prompt}&rdquo;
-                    </p>
-                  </div>
+                    &ldquo;{useCase.prompt}&rdquo;
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Intermediate */}
+        <div
+          style={{
+            minWidth: "340px",
+            maxWidth: "340px",
+          }}
+        >
+          <div
+            style={{
+              padding: "1.25rem 1.5rem",
+              background: "linear-gradient(135deg, #4ade80, #22d3ee)",
+              borderRadius: "var(--radius-md)",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "#fff",
+              marginBottom: "1.25rem",
+              display: "inline-block",
+            }}
+          >
+            Intermediate
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.25rem",
+            }}
+          >
+            {intermediateCases.map((useCase) => (
+              <div
+                key={useCase.title}
+                className="usecase-card"
+                style={{
+                  padding: "1.75rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  borderTop: "3px solid #4ade80",
+                  borderRadius: "var(--radius-lg)",
+                  willChange: "opacity, transform",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <useCase.icon size={20} color="#4ade80" />
+                  <h4
+                    style={{
+                      fontSize: "1.05rem",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                      margin: 0,
+                    }}
+                  >
+                    {useCase.title}
+                  </h4>
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--color-text-muted)",
+                    marginBottom: "1rem",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {useCase.desc}
+                </p>
+                <div
+                  style={{
+                    padding: "0.875rem",
+                    background: "var(--color-bg)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-md)",
+                    borderLeft: "3px solid #4ade80",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      color: "var(--color-text-muted)",
+                      marginBottom: "0.35rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Try this
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "var(--color-text)",
+                      margin: 0,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    &ldquo;{useCase.prompt}&rdquo;
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* End spacer */}
+        <div style={{ minWidth: "6rem" }} />
       </div>
     </section>
   );
