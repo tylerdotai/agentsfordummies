@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { Github, ExternalLink, CheckCircle, Zap } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const agents = [
   {
@@ -67,35 +64,36 @@ const agents = [
 export function SetupCloudSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set(".cloud-card", { autoAlpha: 1, clearProps: "all" });
+        return;
+      }
 
-    const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
+      gsap.set(".cloud-card", { autoAlpha: 0, y: 60 });
 
       mm.add("(min-width: 768px)", () => {
-        gsap.fromTo(
-          section.querySelectorAll(".cloud-card"),
-          { autoAlpha: 0, y: 60 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            stagger: 0.18,
-            scrollTrigger: {
-              trigger: section,
-              start: "top 65%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+        gsap.to(".cloud-card", {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.18,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 65%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
+        });
       });
-    }, section);
 
-    return () => ctx.revert();
-  }, []);
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section

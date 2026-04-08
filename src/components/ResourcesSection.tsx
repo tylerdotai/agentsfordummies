@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Youtube, Twitter, BookOpen, ExternalLink } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from "react";
+import { Youtube, Twitter, BookOpen, ExternalLink, Gift } from "lucide-react";
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const youtubeCreators = [
   {
@@ -130,37 +127,38 @@ const aiProviders = [
 export function ResourcesSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set(".resource-group", { autoAlpha: 1, clearProps: "all" });
+        return;
+      }
 
-    const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
+      gsap.set(".resource-group", { autoAlpha: 0, y: 60 });
 
       mm.add("(min-width: 768px)", () => {
-        section.querySelectorAll(".resource-group").forEach((group, i) => {
-          gsap.fromTo(
-            group,
-            { autoAlpha: 0, y: 60 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.9,
-              ease: "power3.out",
-              delay: i * 0.12,
-              scrollTrigger: {
-                trigger: group,
-                start: "top 80%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
+        gsap.utils.toArray<HTMLElement>(".resource-group").forEach((group, i) => {
+          gsap.to(group, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            delay: i * 0.12,
+            scrollTrigger: {
+              trigger: group,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+              markers: gsapMarkers,
+            },
+          });
         });
       });
-    }, section);
 
-    return () => ctx.revert();
-  }, []);
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
@@ -206,7 +204,7 @@ export function ResourcesSection() {
               marginBottom: "1.5rem",
             }}
           >
-            <span style={{ fontSize: "1.5rem" }}>🎁</span>
+            <Gift size={22} color="var(--color-accent)" />
             <h3
               style={{
                 fontSize: "1.25rem",

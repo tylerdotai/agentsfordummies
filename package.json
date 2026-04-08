@@ -12,6 +12,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@shikijs/rehype": "^1.0.0",
     "@tailwindcss/postcss": "^4.2.2",
     "clsx": "^2.1.1",

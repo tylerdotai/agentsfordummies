@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { Monitor, Cpu, HardDrive, Wifi } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const tiers = [
   {
@@ -49,33 +46,36 @@ const tiers = [
 export function SetupLocalSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set(".local-tier", { autoAlpha: 1, clearProps: "all" });
+        return;
+      }
 
-    const mm = gsap.matchMedia();
+      const mm = gsap.matchMedia();
+      gsap.set(".local-tier", { autoAlpha: 0, y: 60 });
 
-    mm.add("(min-width: 768px)", () => {
-      gsap.fromTo(
-        section.querySelectorAll(".local-tier"),
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1,
+      mm.add("(min-width: 768px)", () => {
+        gsap.to(".local-tier", {
+          autoAlpha: 1,
           y: 0,
           duration: 0.9,
           ease: "power3.out",
           stagger: 0.18,
           scrollTrigger: {
-            trigger: section,
+            trigger: sectionRef.current,
             start: "top 65%",
             toggleActions: "play none none reverse",
+            markers: gsapMarkers,
           },
-        }
-      );
-    });
+        });
+      });
 
-    return () => mm.revert();
-  }, []);
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section

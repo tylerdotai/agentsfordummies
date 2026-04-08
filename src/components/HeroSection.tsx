@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useRef } from "react";
 import { ArrowDown, Sparkles, MessageSquare, ShieldCheck } from "lucide-react";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -13,31 +13,35 @@ export function HeroSection() {
   const previewRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      gsap.set([
+  useGSAP(
+    () => {
+      const targets = [
         eyebrowRef.current,
         headingRef.current,
         subRef.current,
         ctaRef.current,
         previewRef.current,
         scrollIndicatorRef.current,
-      ], { autoAlpha: 1 });
+      ];
 
-      gsap.timeline({ defaults: { ease: "power3.out" } })
-        .from(eyebrowRef.current, { y: 18, autoAlpha: 0, duration: 0.45 })
-        .from(headingRef.current, { y: 28, autoAlpha: 0, duration: 0.7 }, "-=0.15")
-        .from(subRef.current, { y: 22, autoAlpha: 0, duration: 0.55 }, "-=0.35")
-        .from(ctaRef.current, { y: 18, autoAlpha: 0, duration: 0.45 }, "-=0.25")
-        .from(previewRef.current, { y: 18, autoAlpha: 0, duration: 0.45 }, "-=0.2")
-        .from(scrollIndicatorRef.current, { autoAlpha: 0, duration: 0.35 }, "-=0.15");
-    }, section);
+      if (prefersReducedMotion()) {
+        gsap.set(targets, { autoAlpha: 1, clearProps: "transform" });
+        return;
+      }
 
-    return () => ctx.revert();
-  }, []);
+      gsap.set(targets, { autoAlpha: 0 });
+
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .fromTo(eyebrowRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 })
+        .fromTo(headingRef.current, { y: 28 }, { y: 0, autoAlpha: 1, duration: 0.7 }, "-=0.15")
+        .fromTo(subRef.current, { y: 22 }, { y: 0, autoAlpha: 1, duration: 0.55 }, "-=0.35")
+        .fromTo(ctaRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 }, "-=0.25")
+        .fromTo(previewRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 }, "-=0.2")
+        .fromTo(scrollIndicatorRef.current, { y: 10 }, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.15");
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section

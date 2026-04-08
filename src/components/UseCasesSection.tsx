@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { Mail, Search, Calendar, FileText, MessageSquare, CreditCard } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const beginnerCases = [
   {
@@ -148,33 +145,32 @@ function UseCaseCard({
 export function UseCasesSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set(".usecase-card", { autoAlpha: 1, clearProps: "all" });
+        return;
+      }
 
-    const ctx = gsap.context(() => {
-      section.querySelectorAll(".usecase-card").forEach((card, i) => {
-        gsap.fromTo(
-          card,
-          { autoAlpha: 0, y: 40 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            delay: (i % 4) * 0.1,
-            scrollTrigger: {
-              trigger: card,
-              start: "top 88%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+      gsap.set(".usecase-card", { autoAlpha: 0, y: 40 });
+      gsap.utils.toArray<HTMLElement>(".usecase-card").forEach((card, i) => {
+        gsap.to(card, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          delay: (i % 4) * 0.1,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
+        });
       });
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section

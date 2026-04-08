@@ -1,63 +1,56 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { TrendingUp, Moon, Repeat } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 export function WhyCareSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const counterRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const sticky = stickyRef.current;
-    if (!section || !sticky) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set([stickyRef.current, ".why-item"], { autoAlpha: 1, clearProps: "all" });
+        return;
+      }
 
-    const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
+      gsap.set(stickyRef.current, { autoAlpha: 0, scale: 0.9 });
+      gsap.utils.toArray<HTMLElement>(".why-item").forEach((item, i) => {
+        gsap.set(item, { autoAlpha: 0, x: i % 2 === 0 ? -80 : 80 });
+      });
 
       mm.add("(min-width: 768px)", () => {
-        // Sticky left panel pin
-        gsap.fromTo(
-          sticky,
-          { autoAlpha: 0, scale: 0.9 },
-          {
-            autoAlpha: 1,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 60%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        // Alternating rows slide in
-        section.querySelectorAll(".why-item").forEach((item, i) => {
-          gsap.fromTo(
-            item,
-            { autoAlpha: 0, x: i % 2 === 0 ? -80 : 80 },
-            {
-              autoAlpha: 1,
-              x: 0,
-              duration: 0.9,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: item,
-                start: "top 82%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
+        gsap.to(stickyRef.current, {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
         });
 
-        // Counter animations — parseInt handles both numbers and strings
+        gsap.utils.toArray<HTMLElement>(".why-item").forEach((item) => {
+          gsap.to(item, {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 82%",
+              toggleActions: "play none none reverse",
+              markers: gsapMarkers,
+            },
+          });
+        });
+
         counterRefs.current.forEach((el, i) => {
           if (!el) return;
           const target = i === 2 ? 999 : [10, 8][i];
@@ -71,17 +64,19 @@ export function WhyCareSection() {
               if (el) el.textContent = Math.round(obj.val) + suffix;
             },
             scrollTrigger: {
-              trigger: section,
+              trigger: sectionRef.current,
               start: "top 55%",
               once: true,
+              markers: gsapMarkers,
             },
           });
         });
       });
-    }, section);
 
-    return () => ctx.revert();
-  }, []);
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   const reasons = [
     {

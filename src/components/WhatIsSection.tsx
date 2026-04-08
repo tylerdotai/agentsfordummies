@@ -1,67 +1,66 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { Bot, MemoryStick, Plug, Clock } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 export function WhatIsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) {
+        gsap.set([headingRef.current, ".whatis-card"], {
+          autoAlpha: 1,
+          clearProps: "all",
+        });
+        return;
+      }
 
-    const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
+      gsap.set(headingRef.current, {
+        autoAlpha: 0,
+        y: 50,
+        clipPath: "inset(0 100% 0 0)",
+      });
+      gsap.set(".whatis-card", { autoAlpha: 0, y: 50, scale: 0.97 });
 
       mm.add("(min-width: 768px)", () => {
-        // Heading line reveal
-        gsap.fromTo(
-          headingRef.current,
-          { autoAlpha: 0, y: 50, clipPath: "inset(0 100% 0 0)" },
-          {
-            autoAlpha: 1,
-            y: 0,
-            clipPath: "inset(0 0% 0 0)",
-            duration: 1,
-            ease: "power4.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 70%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+        gsap.to(headingRef.current, {
+          autoAlpha: 1,
+          y: 0,
+          clipPath: "inset(0 0% 0 0)",
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
+        });
 
-        // Cards stagger in
-        if (section.querySelector(".whatis-grid")) {
-          gsap.fromTo(
-            section.querySelectorAll(".whatis-card"),
-            { autoAlpha: 0, y: 50, scale: 0.97 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.7,
-              ease: "power3.out",
-              stagger: 0.12,
-              scrollTrigger: {
-                trigger: section.querySelector(".whatis-grid")!,
-                start: "top 75%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
+        gsap.to(".whatis-card", {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ".whatis-grid",
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
+        });
       });
-    }, section);
 
-    return () => ctx.revert();
-  }, []);
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
 
   const points = [
     {

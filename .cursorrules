@@ -1,0 +1,13 @@
+When using GSAP in this project:
+
+- Always use modern GSAP 3 syntax.
+- In React/Next.js components, prefer the useGSAP() hook from @gsap/react.
+- Register plugins through the shared helper in src/lib/gsap.ts.
+- Scope animations to refs or a component root, never global selectors when a ref is possible.
+- Always clean up animations on unmount. If useGSAP is not possible, use gsap.context().
+- Prevent FOUC by setting initial states with gsap.set() or explicit initial hidden styles before animating in.
+- Prefer gsap.timeline() for sequences instead of stacking unrelated gsap.to() calls.
+- Use xPercent/yPercent for percentage-based motion.
+- Respect prefers-reduced-motion and skip non-essential animation when it is enabled.
+- For ScrollTrigger during development, allow markers via the shared gsapMarkers flag.
+- If an animation gets messy, delete the logic and rebuild it from a single clean timeline.
