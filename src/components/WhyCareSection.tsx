@@ -160,6 +160,7 @@ export function WhyCareSection() {
           {/* Left: sticky panel */}
           <div
             ref={stickyRef}
+            className="sticky-panel"
             style={{
               position: "sticky",
               top: "50%",
@@ -308,6 +309,20 @@ export function WhyCareSection() {
         @media (min-width: 768px) {
           .why-layout {
             grid-template-columns: 280px 1fr !important;
+          }
+        }
+        @media (max-width: 767px) {
+          .why-layout {
+            grid-template-columns: 1fr !important;
+          }
+          .sticky-panel {
+            position: static !important;
+            transform: none !important;
+          }
+        }
+        @media (max-width: 767px) {
+          #why-care {
+            padding: 4rem 1rem !important;
           }
         }
       `}</style>
