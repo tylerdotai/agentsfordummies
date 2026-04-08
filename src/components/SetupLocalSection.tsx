@@ -53,26 +53,21 @@ export function SetupLocalSection() {
         return;
       }
 
-      const mm = gsap.matchMedia();
-      gsap.set(".local-tier", { autoAlpha: 0, y: 60 });
+      gsap.set(".local-tier", { autoAlpha: 0, y: 40 });
 
-      mm.add("(min-width: 768px)", () => {
-        gsap.to(".local-tier", {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.18,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 65%",
-            toggleActions: "play none none reverse",
-            markers: gsapMarkers,
-          },
-        });
+      gsap.to(".local-tier", {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        ease: "power3.out",
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+          markers: gsapMarkers,
+        },
       });
-
-      return () => mm.revert();
     },
     { scope: sectionRef }
   );

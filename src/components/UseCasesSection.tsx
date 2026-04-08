@@ -269,14 +269,14 @@ export function UseCasesSection() {
           grid-template-columns: 1fr;
           gap: 1.25rem;
         }
-        @media (min-width: 640px) {
+        @media (min-width: 900px) {
           .cases-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
-        @media (min-width: 1024px) {
-          .cases-grid {
-            grid-template-columns: repeat(2, 1fr);
+        @media (max-width: 767px) {
+          #use-cases {
+            padding: 0 !important;
           }
         }
       `}</style>

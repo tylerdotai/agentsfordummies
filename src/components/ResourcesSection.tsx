@@ -134,28 +134,23 @@ export function ResourcesSection() {
         return;
       }
 
-      const mm = gsap.matchMedia();
-      gsap.set(".resource-group", { autoAlpha: 0, y: 60 });
+      gsap.set(".resource-group", { autoAlpha: 0, y: 40 });
 
-      mm.add("(min-width: 768px)", () => {
-        gsap.utils.toArray<HTMLElement>(".resource-group").forEach((group, i) => {
-          gsap.to(group, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            delay: i * 0.12,
-            scrollTrigger: {
-              trigger: group,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-              markers: gsapMarkers,
-            },
-          });
+      gsap.utils.toArray<HTMLElement>(".resource-group").forEach((group, i) => {
+        gsap.to(group, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          delay: i * 0.08,
+          scrollTrigger: {
+            trigger: group,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+            markers: gsapMarkers,
+          },
         });
       });
-
-      return () => mm.revert();
     },
     { scope: sectionRef }
   );
@@ -607,6 +602,14 @@ export function ResourcesSection() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 767px) {
+          #resources {
+            padding: 4rem 1rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
