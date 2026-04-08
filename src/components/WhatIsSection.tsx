@@ -434,7 +434,7 @@ export function WhatIsSection() {
         .story-layout {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 2rem;
+          gap: 1.5rem;
         }
         .story-copy-column {
           display: flex;
@@ -442,7 +442,7 @@ export function WhatIsSection() {
           gap: 1.5rem;
         }
         .story-step {
-          min-height: 62vh;
+          min-height: 40vh;
           display: flex;
           align-items: center;
         }
@@ -494,7 +494,7 @@ export function WhatIsSection() {
         }
         .story-visual-sticky {
           position: sticky;
-          top: 5.5rem;
+          top: 5rem;
         }
         .story-progress {
           display: flex;
@@ -513,10 +513,10 @@ export function WhatIsSection() {
         }
         .phone-stage {
           position: relative;
-          padding: 1rem 0 3.25rem;
-          min-height: 690px;
+          padding: 0.5rem 0 2.25rem;
+          min-height: 620px;
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: center;
         }
         .phone-shell {
@@ -716,9 +716,9 @@ export function WhatIsSection() {
         }
         @media (min-width: 1024px) {
           .story-layout {
-            grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+            grid-template-columns: minmax(0, 0.95fr) minmax(380px, 1.05fr);
             align-items: start;
-            gap: 3rem;
+            gap: 2rem;
           }
         }
         @media (max-width: 1023px) {
@@ -732,10 +732,10 @@ export function WhatIsSection() {
             top: 4.5rem;
           }
           .phone-stage {
-            min-height: 620px;
+            min-height: 560px;
           }
           .story-step {
-            min-height: 52vh;
+            min-height: 34vh;
           }
         }
         @media (max-width: 767px) {
@@ -743,7 +743,7 @@ export function WhatIsSection() {
             padding: 4rem 1rem !important;
           }
           .story-step {
-            min-height: 42vh;
+            min-height: 30vh;
           }
           .story-step-inner {
             padding: 1.25rem 1.1rem 1.25rem 1.8rem;
@@ -752,8 +752,8 @@ export function WhatIsSection() {
             top: 4rem;
           }
           .phone-stage {
-            min-height: 560px;
-            padding-bottom: 2rem;
+            min-height: 520px;
+            padding-bottom: 1.5rem;
           }
           .phone-shell {
             width: min(100%, 340px);
