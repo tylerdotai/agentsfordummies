@@ -7,10 +7,10 @@ import { useActiveSection } from "./useActiveSection";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
-  { label: "What is an AI Agent?", href: "#what-is" },
-  { label: "Why Care?", href: "#why-care" },
   { label: "Pick Your Path", href: "#setup-cloud" },
   { label: "Use Cases", href: "#use-cases" },
+  { label: "What Is It?", href: "#what-is" },
+  { label: "Why Care?", href: "#why-care" },
   { label: "Resources", href: "#resources" },
 ];
 
