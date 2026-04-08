@@ -77,7 +77,6 @@ function UseCaseCard({
         border: "1px solid var(--color-border)",
         borderTop: `3px solid ${accentColor}`,
         borderRadius: "var(--radius-lg)",
-        willChange: "opacity, transform",
       }}
     >
       <div
@@ -148,57 +147,29 @@ function UseCaseCard({
 
 export function UseCasesSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const scrollContainer = scrollContainerRef.current;
-    if (!section || !scrollContainer) return;
+    if (!section) return;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      // Horizontal scroll — DESKTOP ONLY (≥1024px)
-      mm.add("(min-width: 1024px)", () => {
-        const distance =
-          scrollContainer.scrollWidth - window.innerWidth + 160;
-
-        gsap.to(scrollContainer, {
-          x: -distance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${distance}`,
-            pin: true,
-            pinSpacing: true,
-            scrub: 1,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-      });
-
-      // Mobile/tablet: stagger fade-in for cards (no horizontal scroll)
-      mm.add("(max-width: 1023px)", () => {
-        section.querySelectorAll(".usecase-card").forEach((card, i) => {
-          gsap.fromTo(
-            card,
-            { autoAlpha: 0, y: 40 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.7,
-              ease: "power3.out",
-              delay: (i % 4) * 0.08,
-              scrollTrigger: {
-                trigger: card,
-                start: "top 88%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        });
+      section.querySelectorAll(".usecase-card").forEach((card, i) => {
+        gsap.fromTo(
+          card,
+          { autoAlpha: 0, y: 40 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            delay: (i % 4) * 0.1,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
       });
     }, section);
 
@@ -212,75 +183,36 @@ export function UseCasesSection() {
       style={{
         background: "var(--color-bg-secondary)",
       }}
-      className="usecases-section"
     >
-      {/* Section header */}
-      <div style={{ padding: "4rem 1rem 2rem" }} className="usecases-header">
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3rem)",
-              fontWeight: 800,
-              marginBottom: "1rem",
-              color: "var(--color-text)",
-            }}
-          >
-            What Can You Actually Do With One?
-          </h2>
-          <p
-            style={{
-              fontSize: "1.125rem",
-              color: "var(--color-text-muted)",
-              marginBottom: "2rem",
-              maxWidth: "620px",
-              lineHeight: 1.7,
-            }}
-          >
-            Real prompts. Real workflows. These are things people are running
-            right now with OpenClaw and Hermes Agent — not theoretical examples.
-          </p>
-
-          {/* Scroll hint — desktop only */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              padding: "0.5rem 1rem",
-              background: "var(--color-accent-muted)",
-              border: "1px solid rgba(255,61,0,0.25)",
-              borderRadius: "999px",
-              fontSize: "0.8rem",
-              fontWeight: 600,
-              color: "var(--color-accent)",
-            }}
-            className="scroll-hint"
-          >
-            <span>←</span> Scroll to explore <span>→</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Card container — horizontal scroll on desktop, grid on mobile */}
-      <div
-        ref={scrollContainerRef}
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "1.5rem",
-          padding: "0 1.5rem 4rem calc(100vw - 160px)",
-          willChange: "transform",
-        }}
-        className="cards-container"
-      >
-        {/* Spacer to allow last card to reach center */}
-        <div style={{ minWidth: "2rem" }} />
+      <div style={{ padding: "4rem 1rem", maxWidth: "1100px", margin: "0 auto" }}>
+        <h2
+          style={{
+            fontSize: "clamp(2rem, 5vw, 3rem)",
+            fontWeight: 800,
+            marginBottom: "1rem",
+            color: "var(--color-text)",
+          }}
+        >
+          What Can You Actually Do With One?
+        </h2>
+        <p
+          style={{
+            fontSize: "1.125rem",
+            color: "var(--color-text-muted)",
+            marginBottom: "2.5rem",
+            maxWidth: "620px",
+            lineHeight: 1.7,
+          }}
+        >
+          Real prompts. Real workflows. These are things people are running
+          right now with OpenClaw and Hermes Agent — not theoretical examples.
+        </p>
 
         {/* Beginner column */}
-        <div style={{ minWidth: "340px", maxWidth: "340px" }} className="card-col">
+        <div style={{ marginBottom: "2.5rem" }}>
           <div
             style={{
-              padding: "1.25rem 1.5rem",
+              padding: "1rem 1.5rem",
               background: "var(--color-accent)",
               borderRadius: "var(--radius-md)",
               fontSize: "0.8rem",
@@ -288,19 +220,13 @@ export function UseCasesSection() {
               textTransform: "uppercase",
               letterSpacing: "0.08em",
               color: "#fff",
-              marginBottom: "1.25rem",
+              marginBottom: "1.5rem",
               display: "inline-block",
             }}
           >
             Beginner — Start Here
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.25rem",
-            }}
-          >
+          <div className="cases-grid">
             {beginnerCases.map((useCase) => (
               <UseCaseCard
                 key={useCase.title}
@@ -312,10 +238,10 @@ export function UseCasesSection() {
         </div>
 
         {/* Intermediate column */}
-        <div style={{ minWidth: "340px", maxWidth: "340px" }} className="card-col">
+        <div>
           <div
             style={{
-              padding: "1.25rem 1.5rem",
+              padding: "1rem 1.5rem",
               background: "linear-gradient(135deg, #4ade80, #22d3ee)",
               borderRadius: "var(--radius-md)",
               fontSize: "0.8rem",
@@ -323,19 +249,13 @@ export function UseCasesSection() {
               textTransform: "uppercase",
               letterSpacing: "0.08em",
               color: "#fff",
-              marginBottom: "1.25rem",
+              marginBottom: "1.5rem",
               display: "inline-block",
             }}
           >
             Intermediate
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.25rem",
-            }}
-          >
+          <div className="cases-grid">
             {intermediateCases.map((useCase) => (
               <UseCaseCard
                 key={useCase.title}
@@ -345,60 +265,22 @@ export function UseCasesSection() {
             ))}
           </div>
         </div>
-
-        {/* End spacer */}
-        <div style={{ minWidth: "6rem" }} />
       </div>
 
       <style>{`
-        /* Desktop: standard padding */
-        @media (min-width: 768px) {
-          .usecases-header {
-            padding: var(--spacing-section) 1.5rem 2rem !important;
-          }
-          .scroll-hint {
-            display: inline-flex !important;
+        .cases-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+        @media (min-width: 640px) {
+          .cases-grid {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
-
-        /* Mobile: hide scroll hint, show vertical layout */
-        @media (max-width: 767px) {
-          .scroll-hint {
-            display: none !important;
-          }
-        }
-
-        /* Desktop: horizontal scroll container */
         @media (min-width: 1024px) {
-          .cards-container {
-            flex-direction: row !important;
-            overflow: visible !important;
-          }
-          .card-col {
-            min-width: 340px !important;
-            max-width: 340px !important;
-          }
-        }
-
-        /* Mobile + Tablet: grid layout, no horizontal scroll */
-        @media (max-width: 1023px) {
-          .cards-container {
-            display: grid !important;
-            grid-template-columns: 1fr !important;
-            padding: 0 1rem 3rem !important;
-            gap: 1.25rem !important;
-            overflow: visible !important;
-          }
-          .card-col {
-            min-width: unset !important;
-            max-width: unset !important;
-          }
-        }
-
-        /* Tablet: 2 columns */
-        @media (min-width: 640px) and (max-width: 1023px) {
-          .cards-container {
-            grid-template-columns: repeat(2, 1fr) !important;
+          .cases-grid {
+            grid-template-columns: repeat(2, 1fr);
           }
         }
       `}</style>

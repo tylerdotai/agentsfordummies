@@ -188,24 +188,44 @@ export function HeroSection() {
 
       <div
         ref={scrollIndicatorRef}
+        className="hero-scroll-indicator"
         style={{
           position: "absolute",
-          bottom: "1.5rem",
+          bottom: "2rem",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "0.4rem",
+          gap: "0.5rem",
           color: "var(--color-text-muted)",
-          fontSize: "0.65rem",
-          letterSpacing: "0.12em",
+          fontSize: "0.7rem",
+          fontWeight: 600,
+          letterSpacing: "0.1em",
           textTransform: "uppercase",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          document.querySelector("#what-is")?.scrollIntoView({ behavior: "smooth" });
         }}
       >
-        <span>Scroll</span>
-        <ArrowDown size={14} />
+        <span>See what&apos;s inside</span>
+        <div className="bounce-arrow">
+          <ArrowDown size={16} />
+        </div>
       </div>
+      <style>{`
+        @keyframes bounce-down {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(6px); }
+        }
+        .bounce-arrow {
+          animation: bounce-down 1.6s ease-in-out infinite;
+        }
+        .hero-scroll-indicator:hover {
+          color: var(--color-accent);
+        }
+      `}</style>
     </section>
   );
 }
