@@ -1,63 +1,63 @@
 "use client";
 
 import { useRef } from "react";
-import { Github, ExternalLink, CheckCircle, Zap } from "lucide-react";
+import { ExternalLink, CheckCircle, Sparkles } from "lucide-react";
 import { gsap, gsapMarkers, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
-const agents = [
+const paths = [
+  {
+    name: "Kilo.ai / KiloClaw",
+    tagline: "Best if you want the easiest start",
+    fit: "Pick this if you want the fastest path and do not want to touch the terminal.",
+    description:
+      "Kilo handles the heavy lifting so you can get a running agent quickly and learn by using it first.",
+    href: "https://kilo.ai",
+    docsHref: "https://kilo.ai/docs",
+    cta: "Start with Kilo",
+    difficulty: "Easiest",
+    accent: "var(--color-accent)",
+    bullets: [
+      "Best for non-technical beginners",
+      "Fastest path to a working agent",
+      "No terminal required to get started",
+      "Great if you want results first, setup later",
+    ],
+  },
   {
     name: "OpenClaw",
-    tagline: "Open-source AI agent that runs on your own machine",
+    tagline: "Best if you want local control",
+    fit: "Pick this if you want your agent running on your own machine with memory, cron jobs, and chat app integrations.",
     description:
-      "OpenClaw is a locally-run AI assistant framework that connects to your existing chat apps — Discord, Telegram, WhatsApp, Signal, iMessage, Slack, and more. It has persistent memory, runs cron jobs, automates tasks, and learns your preferences over time. Your data never leaves your computer.",
+      "OpenClaw is the best default for people who want serious personal automation without being locked into a hosted platform.",
     href: "https://openclaw.ai",
     docsHref: "https://docs.openclaw.ai",
-    pros: [
-      "100% open source — your data stays on your machine",
-      "Works with Discord, Telegram, WhatsApp, Signal, iMessage, Slack",
+    cta: "Start with OpenClaw",
+    difficulty: "Best default",
+    accent: "#4ade80",
+    bullets: [
+      "Runs on your own machine",
       "Persistent memory across sessions",
-      "Skills system — extend it with custom capabilities",
-      "Cron jobs, reminders, proactive workflows",
-      "Free — no subscription, no API lock-in",
+      "Works with Discord, Telegram, WhatsApp, Signal, Slack",
+      "Best balance of power and approachability",
     ],
-    difficulty: "Beginner–Intermediate",
-    icon: "",
   },
   {
     name: "Hermes Agent",
-    tagline: "By NousResearch — zero vendor lock-in",
+    tagline: "Best if you want maximum flexibility",
+    fit: "Pick this if you care about model freedom, experimentation, and a more developer-leaning setup.",
     description:
-      "Hermes Agent is a free, open-source agent framework from NousResearch — just like OpenClaw. It outperforms Claude Code and OpenClaw as an agentic harness on real-world tasks. Works with any AI model, connects to Telegram, Discord, Slack, WhatsApp, and Signal. You bring your own API key — no cloud fees, no vendor lock-in.",
+      "Hermes Agent is strong when you want zero vendor lock-in and do not mind a little more setup to get it exactly how you like it.",
     href: "https://hermes-agent.nousresearch.com",
     docsHref: "https://github.com/nousresearch/hermes-agent",
-    pros: [
-      "Zero vendor lock-in — use any AI model",
-      "Outperformed Claude Code and OpenClaw on 89 real-world tasks",
-      "Works on Telegram, Discord, Slack, WhatsApp, Signal",
-      "Creates new skills from experience",
-      "Memory persists across sessions",
-      "100% free and open source — you bring your own API key",
+    cta: "Start with Hermes",
+    difficulty: "Most flexible",
+    accent: "#60a5fa",
+    bullets: [
+      "Use your own model provider",
+      "Great for tinkerers and developers",
+      "Strong multi-tool, multi-platform workflows",
+      "Best if flexibility matters more than simplicity",
     ],
-    difficulty: "Intermediate",
-    icon: "",
-  },
-  {
-    name: "Kilo.ai / KiloClaw",
-    tagline: "The managed path to OpenClaw without the terminal",
-    description:
-      "KiloClaw is a hosted/pre-configured version of OpenClaw that handles the technical setup for you. If you want the OpenClaw experience without configuring it yourself, Kilo gives you a running agent fast with minimal friction.",
-    href: "https://kilo.ai",
-    docsHref: "https://kilo.ai/docs",
-    pros: [
-      "Pre-configured OpenClaw environment",
-      "No terminal required to get started",
-      "Fastest path to a running OpenClaw agent",
-      "Managed infrastructure — you focus on using it",
-      "Great for non-technical users",
-      "Free tier available",
-    ],
-    difficulty: "Beginner",
-    icon: "",
   },
 ];
 
@@ -67,30 +67,24 @@ export function SetupCloudSection() {
   useGSAP(
     () => {
       if (prefersReducedMotion()) {
-        gsap.set(".cloud-card", { autoAlpha: 1, clearProps: "all" });
+        gsap.set(".path-card", { autoAlpha: 1, clearProps: "all" });
         return;
       }
 
-      const mm = gsap.matchMedia();
-      gsap.set(".cloud-card", { autoAlpha: 0, y: 60 });
-
-      mm.add("(min-width: 768px)", () => {
-        gsap.to(".cloud-card", {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.18,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 65%",
-            toggleActions: "play none none reverse",
-            markers: gsapMarkers,
-          },
-        });
+      gsap.set(".path-card", { autoAlpha: 0, y: 40 });
+      gsap.to(".path-card", {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        ease: "power3.out",
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 72%",
+          toggleActions: "play none none reverse",
+          markers: gsapMarkers,
+        },
       });
-
-      return () => mm.revert();
     },
     { scope: sectionRef }
   );
@@ -105,273 +99,219 @@ export function SetupCloudSection() {
       }}
     >
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        <div style={{ marginBottom: "3rem" }}>
-          <h2
+        <div style={{ maxWidth: "760px", marginBottom: "2.5rem" }}>
+          <div
             style={{
-              fontSize: "clamp(2rem, 5vw, 3rem)",
-              fontWeight: 800,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              padding: "0.5rem 0.85rem",
               marginBottom: "1rem",
-              color: "var(--color-text)",
+              borderRadius: "999px",
+              border: "1px solid rgba(255,107,0,0.22)",
+              background: "rgba(255,107,0,0.08)",
+              color: "var(--color-accent)",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
             }}
           >
-            Choose Your Agent
+            <Sparkles size={14} /> Start here
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3.2rem)",
+              fontWeight: 900,
+              marginBottom: "1rem",
+              color: "var(--color-text)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Pick the setup path that fits you.
           </h2>
           <p
             style={{
-              fontSize: "1.125rem",
+              fontSize: "1.1rem",
               color: "var(--color-text-muted)",
-              maxWidth: "640px",
-              lineHeight: 1.7,
+              maxWidth: "700px",
+              lineHeight: 1.75,
+              margin: 0,
             }}
-            className="cloud-sub"
           >
-            All three options below are free to use. OpenClaw and Hermes Agent
-            run entirely on your machine — no data leaves your computer. Kilo
-            handles the setup for you if you want the easiest path in.
+            Do not overthink the tooling. Choose the path that matches your comfort level,
+            get one useful workflow running, and level up after that.
           </p>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
-          }}
-        >
-          {agents.map((agent) => (
+        <div className="path-grid">
+          {paths.map((path) => (
             <div
-              key={agent.name}
-              className="cloud-card"
+              key={path.name}
+              className="path-card"
               style={{
-                padding: "2.5rem",
+                padding: "1.75rem",
                 background: "var(--color-surface)",
-                border: "1px solid var(--color-border)",
+                border: `1px solid ${path.accent}33`,
+                borderTop: `3px solid ${path.accent}`,
                 borderRadius: "var(--radius-lg)",
-                transition: "border-color var(--transition-fast)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderColor =
-                  "var(--color-accent)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderColor =
-                  "var(--color-border)";
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  flexWrap: "wrap",
-                  gap: "1rem",
-                  marginBottom: "1.25rem",
-                }}
-              >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem" }}>
                 <div>
-                  <div
+                  <h3
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      marginBottom: "0.25rem",
+                      fontSize: "1.45rem",
+                      fontWeight: 800,
+                      color: "var(--color-text)",
+                      margin: "0 0 0.35rem",
                     }}
                   >
-                    <span style={{ fontSize: "1.5rem" }}>{agent.icon}</span>
-                    <h3
-                      style={{
-                        fontSize: "1.5rem",
-                        fontWeight: 700,
-                        color: "var(--color-text)",
-                        margin: 0,
-                      }}
-                    >
-                      {agent.name}
-                    </h3>
-                  </div>
+                    {path.name}
+                  </h3>
                   <p
                     style={{
-                      fontSize: "0.875rem",
-                      color: "var(--color-accent)",
                       margin: 0,
-                      fontWeight: 500,
+                      fontSize: "0.9rem",
+                      color: path.accent,
+                      fontWeight: 700,
                     }}
                   >
-                    {agent.tagline}
+                    {path.tagline}
                   </p>
                 </div>
-
-                <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                  <span
-                    style={{
-                      padding: "0.25rem 0.75rem",
-                      background: "var(--color-accent-muted)",
-                      color: "var(--color-accent)",
-                      borderRadius: "999px",
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {agent.difficulty}
-                  </span>
-                  <span
-                    style={{
-                      padding: "0.25rem 0.75rem",
-                      background: "var(--color-bg-secondary)",
-                      color: "var(--color-text-muted)",
-                      borderRadius: "999px",
-                      fontSize: "0.8rem",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Free / Open Source
-                  </span>
-                </div>
+                <span
+                  style={{
+                    alignSelf: "flex-start",
+                    padding: "0.35rem 0.75rem",
+                    borderRadius: "999px",
+                    background: `${path.accent}18`,
+                    color: path.accent,
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {path.difficulty}
+                </span>
               </div>
 
               <p
                 style={{
-                  fontSize: "1rem",
-                  color: "var(--color-text-muted)",
-                  marginBottom: "1.5rem",
+                  fontSize: "0.98rem",
                   lineHeight: 1.7,
+                  color: "var(--color-text)",
+                  marginBottom: "0.8rem",
                 }}
               >
-                {agent.description}
+                {path.fit}
               </p>
 
-              <div
+              <p
                 style={{
-                  display: "flex",
-                  gap: "2rem",
-                  flexWrap: "wrap",
-                  alignItems: "flex-start",
+                  fontSize: "0.92rem",
+                  lineHeight: 1.7,
+                  color: "var(--color-text-muted)",
+                  marginBottom: "1.25rem",
                 }}
               >
-                <div style={{ flex: "1 1 300px" }}>
-                  <p
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "var(--color-text-muted)",
-                      marginBottom: "0.6rem",
-                    }}
-                  >
-                    Why it matters
-                  </p>
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      margin: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.4rem",
-                    }}
-                  >
-                    {agent.pros.map((pro) => (
-                      <li
-                        key={pro}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5rem",
-                          fontSize: "0.9rem",
-                          color: "var(--color-text)",
-                        }}
-                      >
-                        <CheckCircle size={14} color="var(--color-accent)" />
-                        {pro}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {path.description}
+              </p>
 
-                <div
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: "0 0 1.4rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.55rem",
+                }}
+              >
+                {path.bullets.map((bullet) => (
+                  <li
+                    key={bullet}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "0.55rem",
+                      fontSize: "0.9rem",
+                      color: "var(--color-text)",
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    <CheckCircle size={15} color={path.accent} style={{ flexShrink: 0, marginTop: 2 }} />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                <a
+                  href={path.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.75rem",
-                    minWidth: "180px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
+                    padding: "0.8rem 1.2rem",
+                    background: path.accent,
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    borderRadius: "var(--radius-md)",
+                    textDecoration: "none",
                   }}
                 >
-                  <a
-                    href={agent.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      padding: "0.75rem 1.5rem",
-                      background: "var(--color-accent)",
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: "0.95rem",
-                      borderRadius: "var(--radius-md)",
-                      textDecoration: "none",
-                      transition: "background var(--transition-fast), transform var(--transition-fast)",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.background =
-                        "var(--color-accent-hover)";
-                      (e.currentTarget as HTMLAnchorElement).style.transform =
-                        "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.background =
-                        "var(--color-accent)";
-                      (e.currentTarget as HTMLAnchorElement).style.transform =
-                        "translateY(0)";
-                    }}
-                  >
-                    Get Started
-                    <ExternalLink size={14} />
-                  </a>
-                  <a
-                    href={agent.docsHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      padding: "0.6rem 1.5rem",
-                      background: "transparent",
-                      color: "var(--color-text-muted)",
-                      fontWeight: 500,
-                      fontSize: "0.875rem",
-                      borderRadius: "var(--radius-md)",
-                      border: "1px solid var(--color-border)",
-                      textDecoration: "none",
-                      transition: "border-color var(--transition-fast), color var(--transition-fast)",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                        "var(--color-accent)";
-                      (e.currentTarget as HTMLAnchorElement).style.color =
-                        "var(--color-accent)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                        "var(--color-border)";
-                      (e.currentTarget as HTMLAnchorElement).style.color =
-                        "var(--color-text-muted)";
-                    }}
-                  >
-                    <Github size={14} />
-                    Docs
-                  </a>
-                </div>
+                  {path.cta}
+                  <ExternalLink size={14} />
+                </a>
+                <a
+                  href={path.docsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0.8rem 1.2rem",
+                    background: "transparent",
+                    color: "var(--color-text-muted)",
+                    fontWeight: 600,
+                    fontSize: "0.92rem",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--color-border)",
+                    textDecoration: "none",
+                  }}
+                >
+                  Read docs
+                </a>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        .path-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+        @media (min-width: 900px) {
+          .path-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+        @media (max-width: 767px) {
+          #setup-cloud {
+            padding: 4rem 1rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -9,7 +9,7 @@ import styles from "./Navbar.module.css";
 const navLinks = [
   { label: "What is an AI Agent?", href: "#what-is" },
   { label: "Why Care?", href: "#why-care" },
-  { label: "Get Started", href: "#setup-cloud" },
+  { label: "Pick Your Path", href: "#setup-cloud" },
   { label: "Use Cases", href: "#use-cases" },
   { label: "Resources", href: "#resources" },
 ];

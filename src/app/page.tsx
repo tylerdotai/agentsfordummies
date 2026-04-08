@@ -11,10 +11,10 @@ export default function Home() {
   return (
     <div className="relative w-full overflow-x-hidden">
       <HeroSection />
-      <WhatIsSection />
-      <WhyCareSection />
       <SetupCloudSection />
       <UseCasesSection />
+      <WhatIsSection />
+      <WhyCareSection />
       <ResourcesSection />
     </div>
   );

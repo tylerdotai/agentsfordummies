@@ -1,8 +1,29 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowDown, Sparkles, MessageSquare, ShieldCheck } from "lucide-react";
+import { ArrowDown, CheckCircle2, Rocket, ShieldCheck, Sparkles } from "lucide-react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
+
+const proofPoints = [
+  {
+    icon: Rocket,
+    title: "3 setup paths",
+    body: "Pick easiest, local-first, or max-flexibility.",
+    color: "var(--color-accent)",
+  },
+  {
+    icon: Sparkles,
+    title: "8 real prompts",
+    body: "Copy one and get your first win fast.",
+    color: "#4ade80",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Runs on your machine",
+    body: "OpenClaw and Hermes keep your data local.",
+    color: "#60a5fa",
+  },
+];
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,7 +31,8 @@ export function HeroSection() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
+  const proofRef = useRef<HTMLDivElement>(null);
+  const quickWinRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -20,7 +42,8 @@ export function HeroSection() {
         headingRef.current,
         subRef.current,
         ctaRef.current,
-        previewRef.current,
+        proofRef.current,
+        quickWinRef.current,
         scrollIndicatorRef.current,
       ];
 
@@ -33,12 +56,13 @@ export function HeroSection() {
 
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
-        .fromTo(eyebrowRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 })
-        .fromTo(headingRef.current, { y: 28 }, { y: 0, autoAlpha: 1, duration: 0.7 }, "-=0.15")
-        .fromTo(subRef.current, { y: 22 }, { y: 0, autoAlpha: 1, duration: 0.55 }, "-=0.35")
-        .fromTo(ctaRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 }, "-=0.25")
-        .fromTo(previewRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 }, "-=0.2")
-        .fromTo(scrollIndicatorRef.current, { y: 10 }, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.15");
+        .fromTo(eyebrowRef.current, { y: 16 }, { y: 0, autoAlpha: 1, duration: 0.35 })
+        .fromTo(headingRef.current, { y: 24 }, { y: 0, autoAlpha: 1, duration: 0.6 }, "-=0.1")
+        .fromTo(subRef.current, { y: 18 }, { y: 0, autoAlpha: 1, duration: 0.45 }, "-=0.28")
+        .fromTo(ctaRef.current, { y: 14 }, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.22")
+        .fromTo(proofRef.current, { y: 14 }, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.18")
+        .fromTo(quickWinRef.current, { y: 14 }, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.16")
+        .fromTo(scrollIndicatorRef.current, { y: 8 }, { y: 0, autoAlpha: 1, duration: 0.3 }, "-=0.1");
     },
     { scope: sectionRef }
   );
@@ -55,13 +79,13 @@ export function HeroSection() {
         justifyContent: "center",
         textAlign: "center",
         padding: "6rem 1.25rem 5rem",
-        gap: "2rem",
+        gap: "1.5rem",
         position: "relative",
         background:
-          "radial-gradient(circle at top center, rgba(255,107,0,0.14), transparent 32%), var(--color-bg)",
+          "radial-gradient(circle at top center, rgba(255,107,0,0.16), transparent 30%), var(--color-bg)",
       }}
     >
-      <div style={{ maxWidth: "920px", width: "100%" }}>
+      <div style={{ maxWidth: "980px", width: "100%" }}>
         <div
           ref={eyebrowRef}
           style={{
@@ -69,7 +93,7 @@ export function HeroSection() {
             alignItems: "center",
             gap: "0.55rem",
             padding: "0.55rem 0.9rem",
-            marginBottom: "1.25rem",
+            marginBottom: "1rem",
             borderRadius: "999px",
             border: "1px solid rgba(255,107,0,0.25)",
             background: "rgba(255,107,0,0.08)",
@@ -80,50 +104,49 @@ export function HeroSection() {
             textTransform: "uppercase",
           }}
         >
-          <Sparkles size={14} /> Beginner-friendly guide
+          <Sparkles size={14} /> Beginner-friendly, no-BS guide
         </div>
 
         <h1
           ref={headingRef}
           style={{
-            fontSize: "clamp(3rem, 10vw, 7.5rem)",
+            fontSize: "clamp(3rem, 10vw, 6.6rem)",
             fontWeight: 900,
-            lineHeight: 1.02,
-            letterSpacing: "-0.03em",
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
             color: "var(--color-text)",
-            margin: "0 0 1.25rem",
+            margin: "0 0 1rem",
           }}
         >
-          AI Agents for <span style={{ color: "var(--color-accent)" }}>Humans</span>
+          Build your first <span style={{ color: "var(--color-accent)" }}>AI agent</span> in under an hour.
         </h1>
 
         <p
           ref={subRef}
           style={{
-            fontSize: "clamp(1rem, 2.6vw, 1.25rem)",
+            fontSize: "clamp(1rem, 2.3vw, 1.2rem)",
             color: "var(--color-text-muted)",
-            maxWidth: "680px",
-            margin: "0 auto 2rem",
+            maxWidth: "760px",
+            margin: "0 auto 1.6rem",
             lineHeight: 1.75,
           }}
         >
-          No computer science degree. No cloud maze. Just a plain-English guide
-          that gets a normal person from zero to running a personal AI agent in
-          under an hour.
+          Pick the path that fits you, copy a real prompt, and get a useful win today,
+          without needing a computer science degree or a pile of cloud subscriptions.
         </p>
 
         <div
           ref={ctaRef}
           style={{
             display: "flex",
-            gap: "1rem",
+            gap: "0.9rem",
             justifyContent: "center",
             flexWrap: "wrap",
-            marginBottom: "2rem",
+            marginBottom: "1.5rem",
           }}
         >
           <a
-            href="#what-is"
+            href="#setup-cloud"
             style={{
               display: "inline-block",
               padding: "0.95rem 2rem",
@@ -145,13 +168,13 @@ export function HeroSection() {
             }}
             onClick={(e) => {
               e.preventDefault();
-              document.querySelector("#what-is")?.scrollIntoView({ behavior: "smooth" });
+              document.querySelector("#setup-cloud")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            Start Here
+            Pick My Setup Path
           </a>
           <a
-            href="#setup-cloud"
+            href="#use-cases"
             style={{
               display: "inline-block",
               padding: "0.95rem 2rem",
@@ -174,45 +197,55 @@ export function HeroSection() {
             }}
             onClick={(e) => {
               e.preventDefault();
-              document.querySelector("#setup-cloud")?.scrollIntoView({ behavior: "smooth" });
+              document.querySelector("#use-cases")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            See the Agents
+            See Real Examples
           </a>
         </div>
 
         <div
-          ref={previewRef}
-          className="hero-preview-grid"
+          ref={proofRef}
+          className="hero-proof-grid"
           style={{
             display: "grid",
             gap: "1rem",
             gridTemplateColumns: "1fr",
             maxWidth: "860px",
-            margin: "0 auto",
+            margin: "0 auto 1rem",
           }}
         >
-          <div className="hero-preview-card">
-            <ShieldCheck size={18} color="var(--color-accent)" />
-            <div>
-              <strong>Runs on your machine</strong>
-              <div>Your data stays under your control.</div>
+          {proofPoints.map((point) => (
+            <div key={point.title} className="hero-proof-card">
+              <point.icon size={18} color={point.color} />
+              <div>
+                <strong>{point.title}</strong>
+                <div>{point.body}</div>
+              </div>
             </div>
-          </div>
-          <div className="hero-preview-card">
-            <MessageSquare size={18} color="#4ade80" />
-            <div>
-              <strong>Works in chat apps</strong>
-              <div>Discord, Telegram, WhatsApp, Signal, more.</div>
-            </div>
-          </div>
-          <div className="hero-preview-card">
-            <Sparkles size={18} color="#60a5fa" />
-            <div>
-              <strong>Built for normal people</strong>
-              <div>Real examples, simple language, zero fluff.</div>
-            </div>
-          </div>
+          ))}
+        </div>
+
+        <div
+          ref={quickWinRef}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.65rem",
+            padding: "0.75rem 1rem",
+            marginTop: "0.25rem",
+            borderRadius: "var(--radius-md)",
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid var(--color-border)",
+            textAlign: "left",
+            maxWidth: "780px",
+          }}
+        >
+          <CheckCircle2 size={18} color="var(--color-accent)" style={{ flexShrink: 0 }} />
+          <span style={{ color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+            <strong style={{ color: "var(--color-text)" }}>Fast first win:</strong> set up a daily email summary,
+            research assistant, or reminder workflow before you touch the advanced stuff.
+          </span>
         </div>
       </div>
 
@@ -221,7 +254,7 @@ export function HeroSection() {
         className="hero-scroll-indicator"
         style={{
           position: "absolute",
-          bottom: "1.4rem",
+          bottom: "1.2rem",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
@@ -229,17 +262,17 @@ export function HeroSection() {
           alignItems: "center",
           gap: "0.45rem",
           color: "var(--color-text-muted)",
-          fontSize: "0.7rem",
+          fontSize: "0.68rem",
           fontWeight: 600,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           cursor: "pointer",
         }}
         onClick={() => {
-          document.querySelector("#what-is")?.scrollIntoView({ behavior: "smooth" });
+          document.querySelector("#setup-cloud")?.scrollIntoView({ behavior: "smooth" });
         }}
       >
-        <span>Scroll to start</span>
+        <span>Scroll to choose your path</span>
         <div className="bounce-arrow">
           <ArrowDown size={16} />
         </div>
@@ -256,7 +289,7 @@ export function HeroSection() {
         .hero-scroll-indicator:hover {
           color: var(--color-accent);
         }
-        .hero-preview-card {
+        .hero-proof-card {
           display: flex;
           align-items: flex-start;
           gap: 0.8rem;
@@ -268,14 +301,22 @@ export function HeroSection() {
           color: var(--color-text-muted);
           line-height: 1.55;
         }
-        .hero-preview-card strong {
+        .hero-proof-card strong {
           display: block;
           color: var(--color-text);
           margin-bottom: 0.15rem;
         }
         @media (min-width: 768px) {
-          .hero-preview-grid {
+          .hero-proof-grid {
             grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (max-width: 767px) {
+          #hero {
+            padding: 5.5rem 1rem 4.5rem !important;
+          }
+          .hero-scroll-indicator {
+            bottom: 0.85rem !important;
           }
         }
       `}</style>

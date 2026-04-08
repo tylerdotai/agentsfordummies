@@ -85,7 +85,7 @@ export function WhyCareSection() {
       stat: "10x",
       label: "faster on repetitive work",
       desc:
-        "Draft reports, reply to emails, update spreadsheets, schedule meetings — tasks that take hours happen in minutes. Use that time for the work only humans can do.",
+        "Draft reports, reply to emails, update spreadsheets, and schedule meetings in minutes instead of burning half your day on admin.",
       color: "var(--color-accent)",
     },
     {
@@ -94,7 +94,7 @@ export function WhyCareSection() {
       stat: "8hrs",
       label: "of sleep recovered per week",
       desc:
-        "Set it and forget it. Your agent handles the 3am alarm checks, the follow-up emails you keep forgetting, the daily standup summaries. You wake up to a world already handled.",
+        "Set it once and let it run. Follow-ups, checks, and summaries keep moving even when you are asleep or busy.",
       color: "#4ade80",
     },
     {
@@ -103,7 +103,7 @@ export function WhyCareSection() {
       stat: "999+",
       label: "tasks automated around the clock",
       desc:
-        "Agents don't unionize, don't burn out, don't call in sick. They run cron jobs, monitor feeds, and execute workflows on schedule while you live your life.",
+        "They run cron jobs, monitor feeds, and execute recurring workflows on schedule without needing babysitting.",
       color: "#60a5fa",
     },
   ];
@@ -138,9 +138,8 @@ export function WhyCareSection() {
             lineHeight: 1.7,
           }}
         >
-          Most people are still using AI like a search engine. That is like buying
-          a sports car and only driving it to the grocery store. Agents unlock what
-          AI is actually for.
+          Most people are still using AI like a chatbot. Agents are the jump from
+          asking questions to getting real work done while you focus on something else.
         </p>
 
         {/* Two-column layout: sticky left + scrolling right */}
