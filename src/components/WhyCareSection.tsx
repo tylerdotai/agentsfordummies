@@ -92,7 +92,7 @@ export function WhyCareSection() {
       statRef: null,
       label: "round-the-clock automation",
       desc:
-        "Agents don&#39;t unionize, don&#39;t burn out, don&#39;t call in sick. They run cron jobs, monitor feeds, and execute workflows on schedule while you live your life.",
+        "Agents don't unionize, don't burn out, don't call in sick. They run cron jobs, monitor feeds, and execute workflows on schedule while you live your life.",
       color: "#60a5fa",
     },
   ];
@@ -127,7 +127,7 @@ export function WhyCareSection() {
             lineHeight: 1.7,
           }}
         >
-          Most people are still using AI like a search engine. That&#39;s like
+          Most people are still using AI like a search engine. That's like
           buying a sports car and only driving it to the grocery store. Agents
           unlock what AI is actually for.
         </p>

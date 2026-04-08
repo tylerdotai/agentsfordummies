@@ -17,7 +17,7 @@ const beginnerCases = [
   {
     icon: Calendar,
     title: "Schedule meetings hands-free",
-    desc: "Tell your agent when you&#39;re free and who you need to meet with. It finds a slot, sends the invite, and confirms with everyone.",
+    desc: "Tell your agent when you're free and who you need to meet with. It finds a slot, sends the invite, and confirms with everyone.",
     prompt: "Find a 30-minute slot this week to meet with Marcus. Send him a Google Calendar invite if he confirms.",
   },
   {
@@ -45,13 +45,13 @@ const intermediateCases = [
     icon: CreditCard,
     title: "Automate your finances",
     desc: "Connect your agent to your bank and expense tracker. It categorizes transactions, flags anomalies, and reminds you of upcoming bills.",
-    prompt: "Check my bank transactions for the last 7 days. Flag anything over $200 that I haven&#39;t seen before.",
+    prompt: "Check my bank transactions for the last 7 days. Flag anything over $200 that I haven't seen before.",
   },
   {
     icon: FileText,
     title: "Write and iterate on content",
     desc: "From cold emails to LinkedIn posts to client proposals — give your agent a direction and iterate together until it hits the mark.",
-    prompt: "Write a cold email to [prospect] about [product]. Keep it under 150 words, conversational, no buzzwords. I&#39;ll tell you if it needs adjusting.",
+    prompt: "Write a cold email to [prospect] about [product]. Keep it under 150 words, conversational, no buzzwords. I'll tell you if it needs adjusting.",
   },
   {
     icon: Search,

@@ -89,7 +89,7 @@ export function WhatIsSection() {
       icon: Clock,
       title: "It's available 24/7",
       body:
-        "Your agent doesn't sleep, take breaks, or get distracted. It runs in the background, handles scheduled tasks, sends you reminders, and monitors things while you&#39;re away. It's the coworker that never quits.",
+        "Your agent doesn't sleep, take breaks, or get distracted. It runs in the background, handles scheduled tasks, sends you reminders, and monitors things while you're away. It's the coworker that never quits.",
       color: "#f472b6",
     },
   ];

@@ -3,53 +3,51 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Youtube, Twitter, BookOpen, ExternalLink, Github, MessageCircle } from "lucide-react";
+import { Youtube, Twitter, BookOpen, ExternalLink } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const youtubeCreators = [
   {
     name: "Alex Finn",
-    handle: "@alexfinn",
-    desc: "The best OpenClaw content on YouTube. Alex breaks down OpenClaw use cases, setup walkthroughs, and how to build agent teams. Start with his video: &quot;OpenClaw is the most powerful AI tool I've ever used.&quot; (313K views)",
-    href: "https://www.youtube.com/@alexfinn",
+    handle: "@AlexFinnOfficial",
+    desc: "The best OpenClaw content on YouTube. Alex breaks down OpenClaw use cases, setup walkthroughs, and how to build agent teams. Start with his video: \"OpenClaw is the most powerful AI tool I've ever used.\" (313K views)",
+    href: "https://www.youtube.com/@AlexFinnOfficial",
     videoHref: "https://www.youtube.com/watch?v=Rjd1LqF9cG4",
     videoTitle: "How to Build an Army of OpenClaw Agents (67K views)",
-    followers: "300K+ subscribers",
     color: "#ff4444",
   },
   {
     name: "Matthew Berman",
     handle: "@matthew_berman",
-    desc: "Matthew&#39;s mission is making AI accessible to everyone. His OpenClaw coverage — including &quot;I Used OpenClaw to Replace My Brain&quot; — is the best introduction for non-technical people. Clear, practical, no jargon.",
+    desc: "Matthew's mission is making AI accessible to everyone. His OpenClaw coverage — including \"I Used OpenClaw to Replace My Brain\" — is the best introduction for non-technical people. Clear, practical, no jargon.",
     href: "https://www.youtube.com/@matthew_berman",
     videoHref: "https://www.youtube.com/watch?v=Qkqe-uRhQJE",
     videoTitle: "OpenClaw: Personal AI OS — Full Walkthrough",
-    followers: "Makes AI accessible to all",
     color: "#ff4444",
   },
 ];
 
 const twitterAccounts = [
   {
-    name: "Patrick Georgi",
+    name: "Peter Steinberger",
     handle: "@steipete",
-    desc: "Creator of OpenClaw. Follow for the latest updates, feature announcements, and to see what&#39;s coming next for OpenClaw.",
+    desc: "Creator of OpenClaw. Follow for the latest updates, feature announcements, and to see what's coming next for OpenClaw.",
     href: "https://x.com/steipete",
     color: "var(--color-accent)",
   },
   {
     name: "Nous Research",
     handle: "@NousResearch",
-    desc: "The team behind Hermes Agent. They&#39;re pushing the frontier of open-source AI agents and frequently share what&#39;s possible.",
+    desc: "The team behind Hermes Agent. They're pushing the frontier of open-source AI agents and frequently share what's possible.",
     href: "https://x.com/NousResearch",
     color: "#4ade80",
   },
   {
     name: "Alex Finn",
-    handle: "@alexfinn_",
-    desc: "Post regularly about OpenClaw workflows, agent setups, and automation patterns. Great for staying inspired.",
-    href: "https://x.com/alexfinn_",
+    handle: "@AlexFinnOfficial",
+    desc: "Posts regularly about OpenClaw workflows, agent setups, and automation patterns. Great for staying inspired.",
+    href: "https://x.com/AlexFinnOfficial",
     color: "#60a5fa",
   },
   {
@@ -60,11 +58,32 @@ const twitterAccounts = [
     color: "#f472b6",
   },
   {
-    name: "Robert Scoble",
-    handle: "@Scobleizer",
-    desc: "Tech futurist who&#39;s been covering AI agents obsessively. Good for understanding where the entire space is heading.",
-    href: "https://x.com/Scobleizer",
-    color: "#fb923c",
+    name: "Andrej Karpathy",
+    handle: "@karpathy",
+    desc: "Former Tesla AI lead and AI educator. His explanations of neural networks and AI agents are the clearest you'll find anywhere.",
+    href: "https://x.com/karpathy",
+    color: "#fbbf24",
+  },
+  {
+    name: "Alex Ziskind",
+    handle: "@digitalix",
+    desc: "Deep dives on AI agents, automation workflows, and practical AI implementation. One of the most hands-on AI builders online.",
+    href: "https://x.com/digitalix",
+    color: "#a78bfa",
+  },
+  {
+    name: "Tom Döerr",
+    handle: "@tom_doerr",
+    desc: "Open source contributor and AI agent practitioner. Good for technical AI workflows and real-world agent implementations.",
+    href: "https://x.com/tom_doerr",
+    color: "#34d399",
+  },
+  {
+    name: "klöss",
+    handle: "@kloss_xyz",
+    desc: "Builds with AI agents and shares real workflows. Good for staying updated on practical agent engineering.",
+    href: "https://x.com/kloss_xyz",
+    color: "#f472b6",
   },
   {
     name: "OpenClaw Community",
@@ -82,19 +101,29 @@ const docs = [
     desc: "The official getting-started guide, channel setup, skills system, memory management, and full API reference.",
   },
   {
-    title: "Hermes Agent (GitHub)",
-    href: "https://github.com/nousresearch/hermes-agent",
-    desc: "Full documentation, setup guide, and source code for Hermes Agent by NousResearch.",
+    title: "Hermes Agent",
+    href: "https://hermes-agent.nousresearch.com",
+    desc: "The official Hermes Agent website — free, open source, zero vendor lock-in. Setup guides and documentation.",
   },
   {
     title: "Kilo.ai / KiloClaw",
     href: "https://kilo.ai",
-    desc: "Managed OpenClaw hosting. If you don&#39;t want to use the terminal, Kilo gets you running fast.",
+    desc: "Managed OpenClaw hosting. If you don't want to use the terminal, Kilo gets you running fast with zero setup.",
   },
   {
     title: "OpenClaw Discord",
     href: "https://discord.gg/clawd",
     desc: "31,000+ member community. Post your configs, ask questions, share workflows, and connect with other builders.",
+  },
+];
+
+const aiProviders = [
+  {
+    name: "MiniMax (Recommended)",
+    href: "https://platform.minimax.io/subscribe/token-plan?code=2ccyhzbKsx&source=link",
+    desc: "The AI provider Tyler uses for agents. Sign up through this link for 10% off for your friends — and rewards for you. Supports MiniMax M2, M2.7, and more.",
+    badge: "10% off for friends + API credits",
+    color: "var(--color-accent)",
   },
 ];
 
@@ -118,7 +147,7 @@ export function ResourcesSection() {
               y: 0,
               duration: 0.9,
               ease: "power3.out",
-              delay: i * 0.15,
+              delay: i * 0.12,
               scrollTrigger: {
                 trigger: group,
                 start: "top 80%",
@@ -167,11 +196,104 @@ export function ResourcesSection() {
           Follow them, watch their videos, and study how they build.
         </p>
 
+        {/* AI Provider */}
+        <div className="resource-group" style={{ marginBottom: "4rem" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <span style={{ fontSize: "1.5rem" }}>🎁</span>
+            <h3
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "var(--color-text)",
+                margin: 0,
+              }}
+            >
+              AI Provider
+            </h3>
+          </div>
+          <a
+            href="https://platform.minimax.io/subscribe/token-plan?code=2ccyhzbKsx&source=link"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              padding: "1.75rem",
+              background: "var(--color-surface)",
+              border: "1px solid var(--color-accent)",
+              borderRadius: "var(--radius-lg)",
+              textDecoration: "none",
+              transition: "transform var(--transition-fast), box-shadow var(--transition-fast)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.transform =
+                "translateY(-3px)";
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow =
+                "0 8px 30px rgba(255, 61, 0, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.transform =
+                "translateY(0)";
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "1rem",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: 700,
+                    color: "var(--color-accent)",
+                    marginBottom: "0.35rem",
+                  }}
+                >
+                  MiniMax — Tyler uses this provider
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.95rem",
+                    color: "var(--color-text-muted)",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {aiProviders[0].desc}
+                </p>
+              </div>
+              <span
+                style={{
+                  padding: "0.4rem 1rem",
+                  background: "var(--color-accent-muted)",
+                  border: "1px solid rgba(255, 61, 0, 0.3)",
+                  borderRadius: "999px",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "var(--color-accent)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {aiProviders[0].badge}
+              </span>
+            </div>
+          </a>
+        </div>
+
         {/* YouTube Creators */}
-        <div
-          className="resource-group"
-          style={{ marginBottom: "4rem" }}
-        >
+        <div className="resource-group" style={{ marginBottom: "4rem" }}>
           <div
             style={{
               display: "flex",
@@ -263,8 +385,9 @@ export function ResourcesSection() {
                     marginBottom: "1rem",
                     lineHeight: 1.65,
                   }}
-                  dangerouslySetInnerHTML={{ __html: creator.desc }}
-                />
+                >
+                  {creator.desc}
+                </p>
 
                 <div
                   style={{
@@ -299,10 +422,7 @@ export function ResourcesSection() {
         </div>
 
         {/* Twitter Accounts */}
-        <div
-          className="resource-group"
-          style={{ marginBottom: "4rem" }}
-        >
+        <div className="resource-group" style={{ marginBottom: "4rem" }}>
           <div
             style={{
               display: "flex",
@@ -327,7 +447,7 @@ export function ResourcesSection() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: "1rem",
             }}
           >
@@ -341,7 +461,7 @@ export function ResourcesSection() {
                   display: "flex",
                   alignItems: "center",
                   gap: "1rem",
-                  padding: "1.25rem",
+                  padding: "1.1rem 1.25rem",
                   background: "var(--color-surface)",
                   border: "1px solid var(--color-border)",
                   borderRadius: "var(--radius-md)",
@@ -359,8 +479,8 @@ export function ResourcesSection() {
               >
                 <div
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    width: "38px",
+                    height: "38px",
                     borderRadius: "50%",
                     background: `${account.color}20`,
                     display: "flex",
@@ -369,12 +489,12 @@ export function ResourcesSection() {
                     flexShrink: 0,
                   }}
                 >
-                  <Twitter size={18} color={account.color} />
+                  <Twitter size={16} color={account.color} />
                 </div>
                 <div>
                   <div
                     style={{
-                      fontSize: "0.95rem",
+                      fontSize: "0.9rem",
                       fontWeight: 700,
                       color: "var(--color-text)",
                     }}
@@ -383,7 +503,7 @@ export function ResourcesSection() {
                   </div>
                   <div
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "0.78rem",
                       color: account.color,
                       fontWeight: 500,
                     }}
@@ -422,7 +542,7 @@ export function ResourcesSection() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
               gap: "1rem",
             }}
           >
@@ -481,8 +601,9 @@ export function ResourcesSection() {
                     margin: 0,
                     lineHeight: 1.6,
                   }}
-                  dangerouslySetInnerHTML={{ __html: doc.desc }}
-                />
+                >
+                  {doc.desc}
+                </p>
               </a>
             ))}
           </div>

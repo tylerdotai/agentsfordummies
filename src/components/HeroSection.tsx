@@ -160,7 +160,7 @@ export function HeroSection() {
           }}
         >
           No computer science degree. No cloud subscriptions. This is the guide
-          that takes someone who&#39;s never heard of OpenClaw and gets them
+          that takes someone who's never heard of OpenClaw and gets them
           running a personal AI agent — on their own computer, in under an
           hour.
         </p>
@@ -197,7 +197,7 @@ export function HeroSection() {
               document.querySelector("#what-is")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            Start Here — It&#39;s Free
+            Start Here — It's Free
           </a>
           <a
             href="#setup-cloud"

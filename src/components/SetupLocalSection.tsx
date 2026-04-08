@@ -107,7 +107,7 @@ export function SetupLocalSection() {
             }}
           >
             Want full control and no recurring fees? Run agents entirely on your
-            own hardware. Here&#39;s what you need.
+            own hardware. Here's what you need.
           </p>
 
           <div
@@ -134,8 +134,8 @@ export function SetupLocalSection() {
                 lineHeight: 1.6,
               }}
             >
-              <strong>You don&#39;t need the internet</strong> to run a local agent
-              once it&#39;s installed. After initial download, everything runs
+              <strong>You don't need the internet</strong> to run a local agent
+              once it's installed. After initial download, everything runs
               offline on your machine. Your data never leaves your computer.
             </p>
           </div>

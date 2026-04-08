@@ -3,21 +3,21 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useActiveSection } from "./useActiveSection";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
   { label: "What is an AI Agent?", href: "#what-is" },
-  { label: "Why Should You Care?", href: "#why-care" },
-  { label: "Setup — Cloud", href: "#setup-cloud" },
-  { label: "Setup — Local", href: "#setup-local" },
+  { label: "Why Care?", href: "#why-care" },
+  { label: "Get Started", href: "#setup-cloud" },
   { label: "Use Cases", href: "#use-cases" },
   { label: "Resources", href: "#resources" },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { activeSection } = useActiveSection();
 
-  // Close on ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -26,7 +26,6 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -44,9 +43,11 @@ export function Navbar() {
     }, 300);
   };
 
+  const getHrefId = (href: string) => href.replace("#", "");
+
   return (
     <>
-      {/* Hamburger button */}
+      {/* Hamburger */}
       <button
         className={styles.hamburger}
         onClick={() => setIsOpen(!isOpen)}
@@ -57,6 +58,36 @@ export function Navbar() {
         <span className={styles.hamburgerLine} data-open={isOpen} />
         <span className={styles.hamburgerLine} data-open={isOpen} />
       </button>
+
+      {/* Active section indicator — desktop pill */}
+      <div className={styles.activeIndicator}>
+        {navLinks.map((link) => {
+          const id = getHrefId(link.href);
+          const isActive = activeSection === id;
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick(link.href);
+              }}
+              className={styles.indicatorLink}
+              data-active={isActive}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="active-nav-pill"
+                  className={styles.activePill}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className={styles.indicatorLabel}>{link.label}</span>
+            </a>
+          );
+        })}
+      </div>
 
       {/* Full-screen overlay */}
       <AnimatePresence>
@@ -78,27 +109,32 @@ export function Navbar() {
 
             <nav className={styles.nav} role="navigation" aria-label="Main navigation">
               <ul className={styles.navList}>
-                {navLinks.map((link, i) => (
-                  <motion.li
-                    key={link.href}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 30 }}
-                    transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
-                  >
-                    <a
-                      href={link.href}
-                      className={styles.navLink}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick(link.href);
-                      }}
-                      tabIndex={isOpen ? 0 : -1}
+                {navLinks.map((link, i) => {
+                  const id = getHrefId(link.href);
+                  const isActive = activeSection === id;
+                  return (
+                    <motion.li
+                      key={link.href}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 30 }}
+                      transition={{ delay: i * 0.07, duration: 0.4, ease: "easeOut" }}
                     >
-                      {link.label}
-                    </a>
-                  </motion.li>
-                ))}
+                      <a
+                        href={link.href}
+                        className={styles.navLink}
+                        data-active={isActive}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLinkClick(link.href);
+                        }}
+                        tabIndex={isOpen ? 0 : -1}
+                      >
+                        {link.label}
+                      </a>
+                    </motion.li>
+                  );
+                })}
               </ul>
             </nav>
           </motion.div>
