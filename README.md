@@ -1,34 +1,35 @@
 # Agents for Dummies 🦞
 
-> The friendly guide to AI agents — beginner to intermediate. Built for humans, not engineers.
+> The friendly guide to OpenClaw and AI agents — beginner to intermediate. Built for humans, not engineers. Dark theme, lobster energy.
 
 ![Agents for Dummies — Hero Banner](./public/og-image.png)
 
 **Live site:** [agentsfordummies.vercel.app](https://agentsfordummies.vercel.app)
+**Repo:** [github.com/tylerdotai/agentsfordummies](https://github.com/tylerdotai/agentsfordummies)
 
 ---
 
 ## What Is This?
 
-A scroll-triggered, animated guide designed to take someone who's only used ChatGPT through the browser and help them:
+A scroll-triggered, animated guide that takes someone who's only used ChatGPT through the browser and gets them:
 
-1. **Understand** what AI agents are and why they matter
-2. **Get started** with cloud-hosted agent services (no setup required)
-3. **Go deeper** with local PC installation guides and hardware recommendations
-4. **Apply it** with real beginner → intermediate use cases they can try today
+1. **Understanding** what AI agents are and why they matter
+2. **Getting started** with OpenClaw, Hermes Agent, or KiloClaw (all free)
+3. **Applying it** with real beginner → intermediate use cases they can try today
+4. **Going deeper** via the best YouTube creators and X accounts to follow
 
-The site is opinionated: warm design, non-technical tone, encouraging voice, zero jargon without explanation.
+The site is opinionated: dark OpenClaw aesthetic, non-technical tone, encouraging voice, zero jargon without explanation.
 
 ---
 
 ## Design
 
-See [DESIGN.md](./DESIGN.md) for the full design system, color palette, typography, motion principles, and component inventory.
+See [DESIGN.md](./DESIGN.md) for the full design system.
 
 **Quick facts:**
-- **Palette:** Dusty Blue & Cream (`#6B8FAD` accent on `#F7F5F0` warm off-white)
+- **Palette:** Dark (`#0a0a0a` bg) + Orange accent (`#ff3d00`)
 - **Typography:** Inter (headings/UI) + JetBrains Mono (code)
-- **Animations:** GSAP + ScrollTrigger (desktop); reduced-motion safe on mobile
+- **Animations:** GSAP + ScrollTrigger — clip-path reveals, staggered entrances, active nav pill, counter animations
 - **Icons:** Lucide React
 - **Design goal:** Encouraging and empowering — never intimidating
 
@@ -51,34 +52,17 @@ See [DESIGN.md](./DESIGN.md) for the full design system, color palette, typograp
 ## Getting Started
 
 ```bash
-# Clone the repo
 git clone https://github.com/tylerdotai/agentsfordummies.git
 cd agentsfordummies
-
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
-
-# Run typecheck
-npm run typecheck
-
-# Run lint
-npm run lint
 ```
 
----
-
-## Build Rules (Flume SaaS Factory)
-
-All PRs must pass these checks before merge:
-
+**Build checks:**
 ```bash
-npm run build        # Next.js production build succeeds
-npm run typecheck    # TypeScript compiles without errors
-npm run lint         # ESLint passes
-npm run format:check # Prettier passes
+npm run build      # Production build succeeds
+npm run typecheck  # TypeScript compiles without errors
+npm run lint       # ESLint passes (0 errors)
 ```
 
 ---
@@ -89,33 +73,62 @@ npm run format:check # Prettier passes
 agentsfordummies/
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx       # Root layout (fonts, navbar, footer)
+│   │   ├── layout.tsx       # Root layout (fonts, navbar, footer, meta)
 │   │   └── page.tsx         # Single-page scroll experience
 │   ├── components/
-│   │   ├── Navbar.tsx       # OpenAI-style fullscreen overlay nav
-│   │   ├── ScrollProgress.tsx  # Top scroll progress bar
-│   │   ├── Footer.tsx       # Social icons footer
-│   │   ├── HeroSection.tsx  # Hero with GSAP pin + text reveal
-│   │   ├── WhatIsSection.tsx
-│   │   ├── WhyCareSection.tsx
-│   │   ├── SetupCloudSection.tsx
-│   │   ├── SetupLocalSection.tsx
-│   │   ├── UseCasesSection.tsx
-│   │   └── ResourcesSection.tsx
+│   │   ├── Navbar.tsx           # OpenAI-style overlay nav + desktop pill nav
+│   │   ├── Navbar.module.css
+│   │   ├── ScrollProgress.tsx   # Top scroll progress bar
+│   │   ├── Footer.tsx            # Social icons footer
+│   │   ├── HeroSection.tsx       # Hero — pin, scrub, clip-path reveal
+│   │   ├── WhatIsSection.tsx      # 4-card what is an AI agent
+│   │   ├── WhyCareSection.tsx     # Stats + alternating slide-in rows
+│   │   ├── SetupCloudSection.tsx  # OpenClaw, Hermes Agent, KiloClaw cards
+│   │   ├── UseCasesSection.tsx    # Beginner + Intermediate use cases
+│   │   ├── ResourcesSection.tsx   # MiniMax, YouTube, X, Docs
+│   │   └── useActiveSection.ts    # GSAP section tracking hook
 │   ├── styles/
-│   │   └── globals.css      # Tailwind + CSS custom properties
+│   │   └── globals.css           # Tailwind + CSS custom properties
 │   └── lib/
-│       └── utils.ts        # cn() utility
+│       └── utils.ts
 ├── public/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── og-image.png
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 ├── next.config.ts
-├── postcss.config.mjs
 ├── eslint.config.mjs
-└── prettier.config.mjs
+├── prettier.config.mjs
+├── DESIGN.md
+└── README.md
 ```
+
+---
+
+## What's Covered
+
+### Agents (all free to use)
+
+- **OpenClaw 🦞** — open-source, runs locally, connects to Discord/Telegram/WhatsApp/Signal/iMessage/Slack
+- **Hermes Agent** — by NousResearch, zero vendor lock-in, runs on any model, $5 VPS capable
+- **KiloClaw** — managed path, no terminal required, fastest way to get started
+
+### Use Cases (beginner → intermediate)
+
+Real prompts you can copy and paste into your agent right now:
+- Email triage and drafting
+- Meeting scheduling hands-free
+- Research without the rabbit hole
+- Community management
+- Scheduled monitoring workflows
+- Content iteration
+
+### Resources
+
+- **YouTube:** Alex Finn (@AlexFinnOfficial), Matthew Berman (@matthew_berman)
+- **X Accounts:** @steipete (OpenClaw creator), @NousResearch, @karpathy, @digitalix, @tom_doerr, @kloss_xyz, @AlexFinnOfficial, @matthewberman, @openclaw community
+- **AI Provider:** MiniMax (Tyler's recommendation — 10% off referral link in Resources)
 
 ---
 

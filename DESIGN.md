@@ -1,127 +1,118 @@
-# DESIGN.md — Agents for Dummies
+# DESIGN.md — Agents for Dummies 🦞
 
 ## Design Philosophy
 
-Agents for Dummies exists to demystify AI agents for people who've never touched a terminal. The design must be:
+Agents for Dummies exists to demystify AI agents for people who've only used ChatGPT through a browser. The design must be:
 
-- **Encouraging, not intimidating** — warm, human, approachable
-- **Visual-first** — animations and layout communicate before text does
-- **Scannable** — non-technical readers skim; hierarchy guides them
-- **Uncorporate** — nothing about this should feel like enterprise software
+- **Energetic, not intimidating** — lobster energy, not corporate SaaS
+- **Dark and bold** — the OpenClaw aesthetic: dark backgrounds, bright orange accent
+- **Encouraging voice** — non-technical tone, real examples, no jargon without explanation
+- **Motion-forward** — GSAP ScrollTrigger animations make content feel alive
 
 ---
 
-## Color Palette
-
-### Primary — Dusty Blue & Cream
+## Color Palette — OpenClaw Dark Theme
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-bg` | `#F7F5F0` | Page background (warm off-white) |
-| `--color-bg-secondary` | `#EFEFEA` | Section alternates, code blocks |
-| `--color-surface` | `#FFFFFF` | Card backgrounds |
-| `--color-accent` | `#6B8FAD` | Primary CTA, headings, highlights (dusty slate blue) |
-| `--color-accent-hover` | `#5A7A96` | Hover states |
-| `--color-text` | `#2D2D2D` | Body text |
-| `--color-text-muted` | `#6B6B6B` | Secondary text, captions |
-| `--color-border` | `#E0DDD6` | Borders, dividers |
+| `--color-bg` | `#0a0a0a` | Page background |
+| `--color-bg-secondary` | `#141414` | Section alternates |
+| `--color-surface` | `#1c1c1c` | Card backgrounds |
+| `--color-surface-hover` | `#232323` | Card hover |
+| `--color-accent` | `#ff3d00` | Primary CTA, highlights, active states |
+| `--color-accent-hover` | `#ff6a00` | Hover on accent |
+| `--color-accent-muted` | `rgba(255,61,0,0.12)` | Accent backgrounds |
+| `--color-text` | `#f5f5f5` | Body text |
+| `--color-text-muted` | `#888888` | Secondary text |
+| `--color-border` | `#2a2a2a` | Borders |
+| `--color-border-bright` | `#3a3a3a` | Hover borders |
 
-### Why These Colors?
+### Why This Palette?
 
-- Blue is associated with trust and intelligence without the coldness of pure tech blue
-- Warm cream backgrounds avoid the clinical feel of white
-- High contrast text is accessible (WCAG AA minimum)
+OpenClaw's brand is dark + orange. We lean into that fully — it signals "this is for builders and agents" without saying it. High contrast, readable, energetic.
 
 ---
 
 ## Typography
 
-### Font Stack
-
 | Role | Font | Weight |
 |------|------|--------|
-| Headings | Inter | 700, 800 |
+| Headings | Inter | 700, 800, 900 |
 | Body | Inter | 400, 500, 600 |
 | UI labels | Inter | 600 (uppercase tracked) |
-| Code | JetBrains Mono | 400, 500 |
+| Code / stats | JetBrains Mono | 400, 500 |
 
 ### Scale
 
-- Hero heading: `clamp(3rem, 8vw, 6rem)` / weight 800
+- Hero: `clamp(3rem, 9vw, 7rem)` / weight 900
 - Section heading: `clamp(2rem, 5vw, 3rem)` / weight 800
-- Card heading: `1.25rem` / weight 700
+- Card heading: `1.1–1.5rem` / weight 700
 - Body: `1rem` / weight 400
-- Caption/meta: `0.875rem` / weight 400–500
+- Caption/meta: `0.8–0.875rem` / weight 400–500
 
 ---
 
 ## Motion Philosophy
 
-Animations serve comprehension, not decoration.
+GSAP ScrollTrigger powers all scroll-based animations. Desktop only (`matchMedia` gates). Reduced motion respected.
 
-### GSAP ScrollTrigger
+### Animation Patterns
 
-- **Desktop only** — `matchMedia("(min-width: 768px)")` gates all GSAP
-- **Mobile fallback** — simple `opacity` transitions via CSS; no scroll-jacking
-- **Reduced motion** — `prefers-reduced-motion` disables all GSAP animations
-
-### Animation Types
-
-| Pattern | When Used |
-|---------|-----------|
-| Pin + scrub | Hero section (full viewport pin, text reveals on scroll) |
-| Stagger from opacity:0, y:60 | Card grids (staggered entrance) |
-| Slide in from side | List items in "Why Care" section |
-| Scale + fade | Use case cards |
+| Pattern | GSAP | Where |
+|---------|------|-------|
+| Hero pin + scrub | `ScrollTrigger` with `scrub: 0.6` | Hero |
+| Clip-path text reveal | `clipPath: "inset(0 0 100% 0)" → "inset(0 0 0% 0)"` | Hero heading |
+| Stagger fade + translate | `autoAlpha: 0 → 1, y: 50 → 0` | Cards, list items |
+| Left/right alternating | `x: -70 → 0 / x: 70 → 0` | Why Care section |
+| Scale + fade entrance | `scale: 0.95 → 1, autoAlpha: 0 → 1` | Buttons, badges |
+| Back ease | `ease: "back.out(1.4)"` | CTA button |
+| Section-level scroll tracking | `ScrollTrigger.onEnter/onEnterBack` | Active nav pill |
 
 ### Principles
 
-- Duration: 0.7–1.2s for primary reveals, 0.3–0.5s for micro-interactions
-- Ease: `power3.out` for entrances, `power2.inOut` for scrubs
-- Never animate layout properties (width, height) — only transform/opacity
+- `autoAlpha` (opacity + visibility) over `opacity` alone — cleaner
+- `scrub: 0.6` for smooth, non-janky scrub feel
+- Stagger: `0.08–0.18` delay between items
+- Duration: `0.5–1.2s` for primary animations
+- `will-change: transform, opacity` on animated elements
+- `matchMedia("(min-width: 768px)")` gates all GSAP
 
 ---
 
 ## Components
 
 ### Navbar
-- **Default:** Transparent, hamburger icon top-right
-- **Open:** Fullscreen overlay, cream background, centered nav links, animated stagger entrance, X close button
-- **Link click:** Closes menu, smooth-scrolls to anchor
-- **ESC key:** Closes menu
+- **Desktop:** Fixed horizontal pill nav with `backdrop-filter: blur(12px)`. GSAP `layoutId` animated active pill highlights current section in orange.
+- **Mobile:** Hamburger → full-screen dark overlay with staggered link entrance. Framer Motion `AnimatePresence` for overlay.
+- **ESC key** closes menu
+- **Link click:** Closes menu, smooth-scrolls to section
 
 ### ScrollProgress
-- 3px bar fixed at top of viewport
-- Accent-colored (`--color-accent`)
-- Tracks full page scroll progress via GSAP ScrollTrigger
+- 3px gradient bar (`#ff3d00` → `#ff6a00`) fixed at top
+- Tracks full page scroll via `ScrollTrigger.onUpdate`
+
+### Sections
+- **Hero:** Full viewport pin, text reveals on scrub, dual CTA buttons, clip-path heading animation
+- **What Is:** 4-card grid with color-coded top borders and icon + text
+- **Why Care:** Alternating left/right slide-in rows with large stat counters (GSAP number animation)
+- **Setup (Cloud):** 3 agent cards — OpenClaw, Hermes Agent, KiloClaw. Each with icon, tagline, description, pros list, Get Started + Docs CTAs
+- **Use Cases:** Beginner + Intermediate groups, each with prompt examples in styled code-like blocks
+- **Resources:** MiniMax referral section, YouTube creators, X/Twitter accounts grid, official docs
 
 ### Footer
-- `var(--color-bg-secondary)` background
-- Social icons (Twitter/X, GitHub, LinkedIn, website) with hover color transition
-- Copyright line
-
-### Cards
-- White surface on cream background
-- 1px border `var(--color-border)`
-- `var(--radius-lg)` corners
-- Hover: subtle border color shift to accent
-
-### Code Blocks
-- Background: `var(--color-bg-secondary)`
-- Border: 1px solid `var(--color-border)`
-- `var(--radius-md)` corners
-- JetBrains Mono font
+- Dark background (`#141414`)
+- Social icon links: X, GitHub, LinkedIn, website — Lucide icons, icon-only buttons with hover color
 
 ---
 
 ## Accessibility
 
-- Skip-to-content link visible on focus
-- All interactive elements keyboard-navigable
-- Focus states: 2px accent outline with 2px offset
+- Skip-to-content link
 - `aria-label` on all icon-only buttons
-- `aria-expanded` on hamburger menu button
-- Color contrast: all text passes WCAG AA
+- `aria-current="page"` on active nav link
+- `aria-expanded` on hamburger
+- Focus states: 2px orange (`--color-accent`) outline, 2px offset
+- `prefers-reduced-motion` disables all GSAP
 
 ---
 
@@ -129,8 +120,8 @@ Animations serve comprehension, not decoration.
 
 | Breakpoint | Behavior |
 |------------|----------|
-| < 768px | GSAP animations disabled; simple CSS fades; hamburger nav |
-| >= 768px | Full GSAP ScrollTrigger animations; pinned sections |
+| < 768px | GSAP disabled; CSS-only fade transitions; hamburger nav |
+| >= 768px | Full GSAP ScrollTrigger; desktop pill nav active tracking |
 
 ---
 
