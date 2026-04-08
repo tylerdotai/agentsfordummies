@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowDown, Zap } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +12,6 @@ export function HeroSection() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export function HeroSection() {
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
-        // Master timeline for hero pin
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
@@ -36,16 +34,10 @@ export function HeroSection() {
         });
 
         tl.fromTo(
-          badgeRef.current,
-          { autoAlpha: 0, y: -20 },
-          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }
+          headingRef.current,
+          { autoAlpha: 0, y: 80, clipPath: "inset(0 0 100% 0)" },
+          { autoAlpha: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 1.2, ease: "power4.out" }
         )
-          .fromTo(
-            headingRef.current,
-            { autoAlpha: 0, y: 80, clipPath: "inset(0 0 100% 0)" },
-            { autoAlpha: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 1.2, ease: "power4.out" },
-            "-=0.2"
-          )
           .fromTo(
             subRef.current,
             { autoAlpha: 0, y: 40 },
@@ -66,18 +58,11 @@ export function HeroSection() {
           );
       });
 
-      // Mobile: simple fade
       mm.add("(max-width: 767px)", () => {
         gsap.fromTo(
-          [headingRef.current, subRef.current, ctaRef.current, badgeRef.current],
+          [headingRef.current, subRef.current, ctaRef.current],
           { autoAlpha: 0, y: 30 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.12,
-          }
+          { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.12 }
         );
       });
     }, section);
@@ -96,41 +81,18 @@ export function HeroSection() {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        padding: "6rem 1.5rem",
+        padding: "5rem 1.5rem 6rem",
         gap: "2rem",
         position: "relative",
       }}
     >
-      {/* Badge */}
-      <div ref={badgeRef}>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            padding: "0.4rem 1rem",
-            background: "var(--color-accent-muted)",
-            border: "1px solid rgba(255, 61, 0, 0.3)",
-            borderRadius: "999px",
-            fontSize: "0.8rem",
-            fontWeight: 600,
-            color: "var(--color-accent)",
-            letterSpacing: "0.05em",
-          }}
-        >
-          <Zap size={12} />
-          OPEN SOURCE · FREE · RUNS ON YOUR MACHINE
-        </span>
-      </div>
-
       <div style={{ maxWidth: "860px" }}>
-        {/* Heading with clip-path reveal */}
         <h1
           ref={headingRef}
           style={{
-            fontSize: "clamp(3rem, 9vw, 7rem)",
-            fontWeight: 800,
-            lineHeight: 1.05,
+            fontSize: "clamp(3rem, 10vw, 7.5rem)",
+            fontWeight: 900,
+            lineHeight: 1.02,
             letterSpacing: "-0.03em",
             color: "var(--color-text)",
             margin: "0 0 1.5rem",
@@ -141,7 +103,6 @@ export function HeroSection() {
           <span
             style={{
               color: "var(--color-accent)",
-              position: "relative",
               display: "inline-block",
             }}
           >
@@ -152,17 +113,16 @@ export function HeroSection() {
         <p
           ref={subRef}
           style={{
-            fontSize: "clamp(1.1rem, 2.5vw, 1.375rem)",
+            fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
             color: "var(--color-text-muted)",
-            maxWidth: "620px",
+            maxWidth: "560px",
             margin: "0 auto 2.5rem",
-            lineHeight: 1.7,
+            lineHeight: 1.75,
           }}
         >
           No computer science degree. No cloud subscriptions. This is the guide
-          that takes someone who's never heard of OpenClaw and gets them
-          running a personal AI agent — on their own computer, in under an
-          hour.
+          that takes someone who has never heard of OpenClaw and gets them running
+          a personal AI agent on their own computer in under an hour.
         </p>
 
         <div ref={ctaRef} style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -170,60 +130,51 @@ export function HeroSection() {
             href="#what-is"
             style={{
               display: "inline-block",
-              padding: "1rem 2.5rem",
+              padding: "0.875rem 2rem",
               background: "var(--color-accent)",
               color: "#fff",
               fontWeight: 700,
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               borderRadius: "var(--radius-md)",
               textDecoration: "none",
-              transition: "background var(--transition-fast), transform var(--transition-fast)",
-              willChange: "transform",
+              transition: "background 150ms ease, transform 150ms ease",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background =
-                "var(--color-accent-hover)";
-              (e.currentTarget as HTMLAnchorElement).style.transform =
-                "translateY(-3px)";
+              (e.currentTarget as HTMLAnchorElement).style.background = "var(--color-accent-hover)";
+              (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background =
-                "var(--color-accent)";
-              (e.currentTarget as HTMLAnchorElement).style.transform =
-                "translateY(0)";
+              (e.currentTarget as HTMLAnchorElement).style.background = "var(--color-accent)";
+              (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
             }}
             onClick={(e) => {
               e.preventDefault();
               document.querySelector("#what-is")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            Start Here — It's Free
+            Start Here
           </a>
           <a
             href="#setup-cloud"
             style={{
               display: "inline-block",
-              padding: "1rem 2.5rem",
+              padding: "0.875rem 2rem",
               background: "transparent",
               color: "var(--color-text-muted)",
               fontWeight: 600,
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               borderRadius: "var(--radius-md)",
               border: "1px solid var(--color-border)",
               textDecoration: "none",
-              transition: "border-color var(--transition-fast), color var(--transition-fast)",
+              transition: "border-color 150ms ease, color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                "var(--color-accent)";
-              (e.currentTarget as HTMLAnchorElement).style.color =
-                "var(--color-accent)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--color-accent)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-accent)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                "var(--color-border)";
-              (e.currentTarget as HTMLAnchorElement).style.color =
-                "var(--color-text-muted)";
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--color-border)";
+              (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-text-muted)";
             }}
             onClick={(e) => {
               e.preventDefault();
@@ -235,26 +186,25 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div
         ref={scrollIndicatorRef}
         style={{
           position: "absolute",
-          bottom: "2rem",
+          bottom: "1.5rem",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "0.5rem",
+          gap: "0.4rem",
           color: "var(--color-text-muted)",
-          fontSize: "0.7rem",
+          fontSize: "0.65rem",
           letterSpacing: "0.12em",
           textTransform: "uppercase",
         }}
       >
         <span>Scroll</span>
-        <ArrowDown size={16} />
+        <ArrowDown size={14} />
       </div>
     </section>
   );

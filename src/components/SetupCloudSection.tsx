@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const agents = [
   {
-    name: "OpenClaw 🦞",
+    name: "OpenClaw",
     tagline: "Open-source AI agent that runs on your own machine",
     description:
       "OpenClaw is a locally-run AI assistant framework that connects to your existing chat apps — Discord, Telegram, WhatsApp, Signal, iMessage, Slack, and more. It has persistent memory, runs cron jobs, automates tasks, and learns your preferences over time. Your data never leaves your computer.",
@@ -24,7 +24,7 @@ const agents = [
       "Free — no subscription, no API lock-in",
     ],
     difficulty: "Beginner–Intermediate",
-    icon: "🦞",
+    icon: "",
   },
   {
     name: "Hermes Agent",
@@ -42,7 +42,7 @@ const agents = [
       "100% free and open source — you bring your own API key",
     ],
     difficulty: "Intermediate",
-    icon: "🔮",
+    icon: "",
   },
   {
     name: "Kilo.ai / KiloClaw",
@@ -60,7 +60,7 @@ const agents = [
       "Free tier available",
     ],
     difficulty: "Beginner",
-    icon: "⚡",
+    icon: "",
   },
 ];
 

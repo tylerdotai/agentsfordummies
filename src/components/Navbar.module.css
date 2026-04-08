@@ -1,18 +1,19 @@
-/* Desktop: horizontal pill nav */
+/* Desktop: compact horizontal pill nav */
 .activeIndicator {
   position: fixed;
-  top: 1.25rem;
+  top: 0.875rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 998;
   display: none;
   align-items: center;
   gap: 0;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(20, 20, 20, 0.9);
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  padding: 0.3rem;
+  padding: 0.2rem 0.35rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 @media (min-width: 768px) {
@@ -23,14 +24,15 @@
 
 .indicatorLink {
   position: relative;
-  padding: 0.4rem 0.9rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--color-text-muted);
   transition: color var(--transition-fast);
   z-index: 1;
+  white-space: nowrap;
 }
 
 .indicatorLink:hover {
@@ -54,17 +56,17 @@
   z-index: 0;
 }
 
-/* Hamburger */
+/* Hamburger — mobile only */
 .hamburger {
   position: fixed;
-  top: 1.25rem;
-  right: 1.5rem;
+  top: 0.875rem;
+  right: 1rem;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   padding: 0.5rem;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(20, 20, 20, 0.9);
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -72,19 +74,19 @@
   transition: background var(--transition-fast);
 }
 
+@media (min-width: 768px) {
+  .hamburger {
+    display: none !important;
+  }
+}
+
 .hamburger:hover {
   background: var(--color-surface);
 }
 
-@media (min-width: 768px) {
-  .hamburger {
-    display: none;
-  }
-}
-
 .hamburgerLine {
   display: block;
-  width: 22px;
+  width: 20px;
   height: 2px;
   background: var(--color-text);
   border-radius: 2px;
@@ -92,7 +94,7 @@
 }
 
 .hamburgerLine[data-open="true"]:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 
 .hamburgerLine[data-open="true"]:nth-child(2) {
@@ -100,7 +102,7 @@
 }
 
 .hamburgerLine[data-open="true"]:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* Full-screen overlay */
@@ -153,7 +155,7 @@
 }
 
 .navLink {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--color-text-muted);
   text-decoration: none;
