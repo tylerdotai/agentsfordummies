@@ -5,12 +5,13 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Agents for Dummies — The Friendly Guide to AI Agents",
+  title: "Agents for Dummies — The Friendly Guide to OpenClaw & AI Agents",
   description:
-    "Learn how to use AI agents from scratch. Beginner-friendly guides for cloud setup, local installation, and real-world use cases.",
+    "Learn how to set up and use OpenClaw and Hermes Agent from scratch. Beginner-friendly guides for real people who want AI agents that actually do things.",
   openGraph: {
     title: "Agents for Dummies",
-    description: "The friendly guide to AI agents — beginner to intermediate.",
+    description:
+      "The friendly guide to OpenClaw and AI agents — beginner to intermediate. No jargon, no cloud subscriptions.",
     type: "website",
   },
 };
@@ -31,7 +32,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </head>

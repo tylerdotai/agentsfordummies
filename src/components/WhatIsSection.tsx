@@ -3,75 +3,94 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Bot, MemoryStick, Plug, Clock } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function WhatIsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 768px)", () => {
-      gsap.fromTo(
-        section.querySelector(".whatis-heading"),
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      if (cardsRef.current) {
-        const cards = cardsRef.current.querySelectorAll(".card-item");
+      mm.add("(min-width: 768px)", () => {
+        // Heading line reveal
         gsap.fromTo(
-          cards,
-          { opacity: 0, y: 50 },
+          headingRef.current,
+          { autoAlpha: 0, y: 50, clipPath: "inset(0 100% 0 0)" },
           {
-            opacity: 1,
+            autoAlpha: 1,
             y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.15,
+            clipPath: "inset(0 0% 0 0)",
+            duration: 1,
+            ease: "power4.out",
             scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 75%",
+              trigger: section,
+              start: "top 70%",
               toggleActions: "play none none reverse",
             },
           }
         );
-      }
-    });
 
-    return () => mm.revert();
+        // Cards stagger in
+        if (section.querySelector(".whatis-grid")) {
+          gsap.fromTo(
+            section.querySelectorAll(".whatis-card"),
+            { autoAlpha: 0, y: 50, scale: 0.97 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.7,
+              ease: "power3.out",
+              stagger: 0.12,
+              scrollTrigger: {
+                trigger: section.querySelector(".whatis-grid")!,
+                start: "top 75%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      });
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   const points = [
     {
-      title: "It's a digital helper that acts for you",
+      icon: Bot,
+      title: "It's software that acts for you",
       body:
-        "An AI agent is a program that uses AI to understand what you want, then actually does the task — writing emails, searching the web, organizing files, coding, and more — without you holding its hand step by step.",
+        "An AI agent is a program that uses an AI model to understand what you want, then actually does the task — writing emails, searching the web, reading documents, running code, managing your calendar. It doesn't just chat. It acts.",
+      color: "var(--color-accent)",
     },
     {
-      title: "It remembers context",
+      icon: MemoryStick,
+      title: "It remembers everything",
       body:
-        "Unlike a simple chatbot that forgets everything after each response, an agent keeps track of your goals, preferences, and ongoing projects across multiple conversations and sessions.",
+        "Unlike a basic chatbot that forgets everything after each response, an agent like OpenClaw keeps track of your goals, preferences, projects, and past conversations across weeks and months. It builds a model of you.",
+      color: "#4ade80",
     },
     {
-      title: "It uses tools",
+      icon: Plug,
+      title: "It connects to your tools",
       body:
-        "Agents don't just talk — they browse the web, read and write files, run code, send emails, and interact with other apps. They're versatile, not a one-trick chatbot.",
+        "OpenClaw connects to Discord, Telegram, WhatsApp, Signal, iMessage, Slack, email, GitHub, and dozens of other apps. It can interact with your computer like you would — clicking, typing, browsing.",
+      color: "#60a5fa",
+    },
+    {
+      icon: Clock,
+      title: "It's available 24/7",
+      body:
+        "Your agent doesn't sleep, take breaks, or get distracted. It runs in the background, handles scheduled tasks, sends you reminders, and monitors things while you&#39;re away. It's the coworker that never quits.",
+      color: "#f472b6",
     },
   ];
 
@@ -81,17 +100,19 @@ export function WhatIsSection() {
       id="what-is"
       style={{
         padding: "var(--spacing-section) 1.5rem",
-        background: "var(--color-surface)",
+        background: "var(--color-bg-secondary)",
       }}
     >
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
         <h2
+          ref={headingRef}
           className="whatis-heading"
           style={{
             fontSize: "clamp(2rem, 5vw, 3rem)",
             fontWeight: 800,
             marginBottom: "1rem",
             color: "var(--color-text)",
+            willChange: "clip-path, opacity, transform",
           }}
         >
           What Is an AI Agent?
@@ -102,46 +123,59 @@ export function WhatIsSection() {
             fontSize: "1.25rem",
             color: "var(--color-text-muted)",
             marginBottom: "3.5rem",
-            maxWidth: "700px",
+            maxWidth: "680px",
+            lineHeight: 1.7,
           }}
         >
-          Think of it like hiring a very capable remote assistant who lives in
-          your computer. You tell them the outcome you want — they figure out
-          how to get there.
+          Think of it like hiring a very capable remote assistant who lives
+          inside your computer. You tell them the outcome you want — they figure
+          out how to get there and do it while you sleep.
         </p>
 
         <div
-          ref={cardsRef}
+          className="whatis-grid"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "1.5rem",
           }}
         >
           {points.map((point) => (
             <div
               key={point.title}
-              className="card-item"
+              className="whatis-card"
               style={{
                 padding: "2rem",
-                background: "var(--color-bg)",
+                background: "var(--color-surface)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius-lg)",
+                borderTop: `3px solid ${point.color}`,
+                willChange: "opacity, transform",
               }}
             >
-              <h3
+              <div
                 style={{
-                  fontSize: "1.25rem",
-                  fontWeight: 700,
-                  marginBottom: "0.75rem",
-                  color: "var(--color-accent)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  marginBottom: "1rem",
                 }}
               >
-                {point.title}
-              </h3>
+                <point.icon size={22} color={point.color} />
+                <h3
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: 700,
+                    color: "var(--color-text)",
+                    margin: 0,
+                  }}
+                >
+                  {point.title}
+                </h3>
+              </div>
               <p
                 style={{
-                  fontSize: "1rem",
+                  fontSize: "0.95rem",
                   color: "var(--color-text-muted)",
                   lineHeight: 1.7,
                   margin: 0,

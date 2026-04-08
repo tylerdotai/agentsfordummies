@@ -3,60 +3,98 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { BookOpen, ExternalLink, Github, MessageCircle } from "lucide-react";
+import { Youtube, Twitter, BookOpen, ExternalLink, Github, MessageCircle } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const resources = [
+const youtubeCreators = [
   {
-    category: "Official Documentation",
-    items: [
-      {
-        title: "OpenClaw Docs",
-        href: "https://docs.openclaw.ai",
-        desc: "The full OpenClaw documentation — setup, configuration, plugins, and API reference.",
-      },
-      {
-        title: "Kilo.ai / KiloClaw",
-        href: "https://kilo.ai",
-        desc: "Managed cloud hosting for OpenClaw agents. Easiest path to running your first agent.",
-      },
-      {
-        title: "Ollama",
-        href: "https://ollama.com",
-        desc: "Run open-source AI models locally on your Mac, Linux, or Windows machine.",
-      },
-    ],
+    name: "Alex Finn",
+    handle: "@alexfinn",
+    desc: "The best OpenClaw content on YouTube. Alex breaks down OpenClaw use cases, setup walkthroughs, and how to build agent teams. Start with his video: &quot;OpenClaw is the most powerful AI tool I've ever used.&quot; (313K views)",
+    href: "https://www.youtube.com/@alexfinn",
+    videoHref: "https://www.youtube.com/watch?v=Rjd1LqF9cG4",
+    videoTitle: "How to Build an Army of OpenClaw Agents (67K views)",
+    followers: "300K+ subscribers",
+    color: "#ff4444",
   },
   {
-    category: "Community & Help",
-    items: [
-      {
-        title: "OpenClaw Discord",
-        href: "https://discord.gg/clawd",
-        desc: "The official OpenClaw community. Get help, share what you're building, and connect with other agent builders.",
-      },
-      {
-        title: "OpenClaw GitHub",
-        href: "https://github.com/openclaw/openclaw",
-        desc: "Star it, read the source, open issues, and contribute to the project.",
-      },
-    ],
+    name: "Matthew Berman",
+    handle: "@matthew_berman",
+    desc: "Matthew&#39;s mission is making AI accessible to everyone. His OpenClaw coverage — including &quot;I Used OpenClaw to Replace My Brain&quot; — is the best introduction for non-technical people. Clear, practical, no jargon.",
+    href: "https://www.youtube.com/@matthew_berman",
+    videoHref: "https://www.youtube.com/watch?v=Qkqe-uRhQJE",
+    videoTitle: "OpenClaw: Personal AI OS — Full Walkthrough",
+    followers: "Makes AI accessible to all",
+    color: "#ff4444",
+  },
+];
+
+const twitterAccounts = [
+  {
+    name: "Patrick Georgi",
+    handle: "@steipete",
+    desc: "Creator of OpenClaw. Follow for the latest updates, feature announcements, and to see what&#39;s coming next for OpenClaw.",
+    href: "https://x.com/steipete",
+    color: "var(--color-accent)",
   },
   {
-    category: "Further Learning",
-    items: [
-      {
-        title: "AI Agents Explained (YouTube)",
-        href: "#",
-        desc: "A playlist of beginner-friendly videos explaining what AI agents are and how to think about them.",
-      },
-      {
-        title: "Prompt Engineering Guide",
-        href: "#",
-        desc: "How to talk to AI systems effectively — the foundational skill for working with agents.",
-      },
-    ],
+    name: "Nous Research",
+    handle: "@NousResearch",
+    desc: "The team behind Hermes Agent. They&#39;re pushing the frontier of open-source AI agents and frequently share what&#39;s possible.",
+    href: "https://x.com/NousResearch",
+    color: "#4ade80",
+  },
+  {
+    name: "Alex Finn",
+    handle: "@alexfinn_",
+    desc: "Post regularly about OpenClaw workflows, agent setups, and automation patterns. Great for staying inspired.",
+    href: "https://x.com/alexfinn_",
+    color: "#60a5fa",
+  },
+  {
+    name: "Matthew Berman",
+    handle: "@matthewberman",
+    desc: "Shares AI tools, OpenClaw tips, and practical AI workflows almost daily. One of the most consistently useful AI accounts to follow.",
+    href: "https://x.com/matthewberman",
+    color: "#f472b6",
+  },
+  {
+    name: "Robert Scoble",
+    handle: "@Scobleizer",
+    desc: "Tech futurist who&#39;s been covering AI agents obsessively. Good for understanding where the entire space is heading.",
+    href: "https://x.com/Scobleizer",
+    color: "#fb923c",
+  },
+  {
+    name: "OpenClaw Community",
+    handle: "@openclaw",
+    desc: "Official OpenClaw community on X. 31K+ members sharing workflows, configs, and helping each other build better agents.",
+    href: "https://x.com/openclaw",
+    color: "var(--color-accent)",
+  },
+];
+
+const docs = [
+  {
+    title: "OpenClaw Docs",
+    href: "https://docs.openclaw.ai",
+    desc: "The official getting-started guide, channel setup, skills system, memory management, and full API reference.",
+  },
+  {
+    title: "Hermes Agent (GitHub)",
+    href: "https://github.com/nousresearch/hermes-agent",
+    desc: "Full documentation, setup guide, and source code for Hermes Agent by NousResearch.",
+  },
+  {
+    title: "Kilo.ai / KiloClaw",
+    href: "https://kilo.ai",
+    desc: "Managed OpenClaw hosting. If you don&#39;t want to use the terminal, Kilo gets you running fast.",
+  },
+  {
+    title: "OpenClaw Discord",
+    href: "https://discord.gg/clawd",
+    desc: "31,000+ member community. Post your configs, ask questions, share workflows, and connect with other builders.",
   },
 ];
 
@@ -67,28 +105,32 @@ export function ResourcesSection() {
     const section = sectionRef.current;
     if (!section) return;
 
-    const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 768px)", () => {
-      gsap.fromTo(
-        section.querySelectorAll(".resource-group"),
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: section,
-            start: "top 65%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    });
+      mm.add("(min-width: 768px)", () => {
+        section.querySelectorAll(".resource-group").forEach((group, i) => {
+          gsap.fromTo(
+            group,
+            { autoAlpha: 0, y: 60 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              delay: i * 0.15,
+              scrollTrigger: {
+                trigger: group,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
+      });
+    }, section);
 
-    return () => mm.revert();
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -109,115 +151,341 @@ export function ResourcesSection() {
             color: "var(--color-text)",
           }}
         >
-          Resources
+          Learn From the Best
         </h2>
 
         <p
           style={{
             fontSize: "1.25rem",
             color: "var(--color-text-muted)",
-            marginBottom: "3.5rem",
+            marginBottom: "4rem",
+            maxWidth: "600px",
+            lineHeight: 1.7,
           }}
         >
-          Everything you need to go deeper. Documentation, community, and
-          next steps.
+          These creators and accounts are where the real knowledge lives.
+          Follow them, watch their videos, and study how they build.
         </p>
 
+        {/* YouTube Creators */}
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "2.5rem",
-          }}
+          className="resource-group"
+          style={{ marginBottom: "4rem" }}
         >
-          {resources.map((group) => (
-            <div key={group.category} className="resource-group">
-              <h3
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color: "var(--color-accent)",
-                  marginBottom: "1.25rem",
-                }}
-              >
-                {group.category}
-              </h3>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <Youtube size={24} color="#ff4444" />
+            <h3
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "var(--color-text)",
+                margin: 0,
+              }}
+            >
+              YouTube Creators Worth Watching
+            </h3>
+          </div>
 
-              <div
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {youtubeCreators.map((creator) => (
+              <a
+                key={creator.name}
+                href={creator.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
+                  display: "block",
+                  padding: "1.75rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-lg)",
+                  textDecoration: "none",
+                  transition: "border-color var(--transition-fast), transform var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    creator.color;
+                  (e.currentTarget as HTMLAnchorElement).style.transform =
+                    "translateY(-3px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--color-border)";
+                  (e.currentTarget as HTMLAnchorElement).style.transform =
+                    "translateY(0)";
                 }}
               >
-                {group.items.map((item) => (
-                  <a
-                    key={item.title}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <h4
                     style={{
-                      display: "block",
-                      padding: "1.25rem",
-                      background: "var(--color-surface)",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: "var(--radius-md)",
-                      textDecoration: "none",
-                      transition: "border-color var(--transition-fast), transform var(--transition-fast)",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                        "var(--color-accent)";
-                      (e.currentTarget as HTMLAnchorElement).style.transform =
-                        "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                        "var(--color-border)";
-                      (e.currentTarget as HTMLAnchorElement).style.transform =
-                        "translateY(0)";
+                      fontSize: "1.1rem",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                      margin: 0,
                     }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "0.35rem",
-                      }}
-                    >
-                      <h4
-                        style={{
-                          fontSize: "1rem",
-                          fontWeight: 600,
-                          color: "var(--color-text)",
-                          margin: 0,
-                        }}
-                      >
-                        {item.title}
-                      </h4>
-                      <ExternalLink
-                        size={14}
-                        color="var(--color-text-muted)"
-                      />
-                    </div>
-                    <p
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "var(--color-text-muted)",
-                        margin: 0,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {item.desc}
-                    </p>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
+                    {creator.name}
+                  </h4>
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "var(--color-text-muted)",
+                    }}
+                  >
+                    {creator.handle}
+                  </span>
+                </div>
+
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--color-text-muted)",
+                    marginBottom: "1rem",
+                    lineHeight: 1.65,
+                  }}
+                  dangerouslySetInnerHTML={{ __html: creator.desc }}
+                />
+
+                <div
+                  style={{
+                    padding: "0.6rem 0.875rem",
+                    background: "rgba(255, 68, 68, 0.1)",
+                    border: "1px solid rgba(255, 68, 68, 0.2)",
+                    borderRadius: "var(--radius-sm)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <Youtube size={13} color="#ff4444" />
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#ff4444",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {creator.videoTitle}
+                  </span>
+                  <ExternalLink
+                    size={12}
+                    color="var(--color-text-muted)"
+                    style={{ marginLeft: "auto" }}
+                  />
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Twitter Accounts */}
+        <div
+          className="resource-group"
+          style={{ marginBottom: "4rem" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <Twitter size={24} color="var(--color-accent)" />
+            <h3
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "var(--color-text)",
+                margin: 0,
+              }}
+            >
+              X Accounts to Follow
+            </h3>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {twitterAccounts.map((account) => (
+              <a
+                key={account.handle}
+                href={account.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  padding: "1.25rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  transition: "border-color var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    account.color;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--color-border)";
+                }}
+              >
+                <div
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    background: `${account.color}20`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Twitter size={18} color={account.color} />
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.95rem",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                    }}
+                  >
+                    {account.name}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      color: account.color,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {account.handle}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Official Docs */}
+        <div className="resource-group">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <BookOpen size={24} color="var(--color-text-muted)" />
+            <h3
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "var(--color-text)",
+                margin: 0,
+              }}
+            >
+              Official Documentation
+            </h3>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1rem",
+            }}
+          >
+            {docs.map((doc) => (
+              <a
+                key={doc.title}
+                href={doc.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  padding: "1.25rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-md)",
+                  textDecoration: "none",
+                  transition: "border-color var(--transition-fast), transform var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--color-accent)";
+                  (e.currentTarget as HTMLAnchorElement).style.transform =
+                    "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "var(--color-border)";
+                  (e.currentTarget as HTMLAnchorElement).style.transform =
+                    "translateY(0)";
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "0.35rem",
+                  }}
+                >
+                  <h4
+                    style={{
+                      fontSize: "0.95rem",
+                      fontWeight: 600,
+                      color: "var(--color-text)",
+                      margin: 0,
+                    }}
+                  >
+                    {doc.title}
+                  </h4>
+                  <ExternalLink size={13} color="var(--color-text-muted)" />
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "var(--color-text-muted)",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                  dangerouslySetInnerHTML={{ __html: doc.desc }}
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
