@@ -62,13 +62,6 @@ const twitterAccounts = [
     color: "#fbbf24",
   },
   {
-    name: "Alex Ziskind",
-    handle: "@digitalix",
-    desc: "Deep dives on AI agents, automation workflows, and practical AI implementation. One of the most hands-on AI builders online.",
-    href: "https://x.com/digitalix",
-    color: "#a78bfa",
-  },
-  {
     name: "Tom Döerr",
     handle: "@tom_doerr",
     desc: "Open source contributor and AI agent practitioner. Good for technical AI workflows and real-world agent implementations.",
